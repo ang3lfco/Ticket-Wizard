@@ -56,7 +56,11 @@ public class frmPerfil extends javax.swing.JFrame {
         txfUsuario.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txfUsuario.setForeground(new java.awt.Color(255, 255, 255));
         txfUsuario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+<<<<<<< HEAD
         txfUsuario.setText("Angel Francisco Martinez");
+=======
+        txfUsuario.setText("Angel Francisco");
+>>>>>>> 15eff9367d708e679b836400cad719939e998b18
         txfUsuario.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
@@ -64,7 +68,11 @@ public class frmPerfil extends javax.swing.JFrame {
         txfUsuario1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txfUsuario1.setForeground(new java.awt.Color(255, 255, 255));
         txfUsuario1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+<<<<<<< HEAD
         txfUsuario1.setText("ang3lfco@outlook.com");
+=======
+        txfUsuario1.setText("example@email.com");
+>>>>>>> 15eff9367d708e679b836400cad719939e998b18
         txfUsuario1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfUsuario1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
@@ -72,7 +80,11 @@ public class frmPerfil extends javax.swing.JFrame {
         txfUsuario2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txfUsuario2.setForeground(new java.awt.Color(255, 255, 255));
         txfUsuario2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+<<<<<<< HEAD
         txfUsuario2.setText("Sahuaro 58 CP. 83280");
+=======
+        txfUsuario2.setText("Direccion");
+>>>>>>> 15eff9367d708e679b836400cad719939e998b18
         txfUsuario2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfUsuario2.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
@@ -80,7 +92,11 @@ public class frmPerfil extends javax.swing.JFrame {
         txfUsuario3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txfUsuario3.setForeground(new java.awt.Color(255, 255, 255));
         txfUsuario3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+<<<<<<< HEAD
         txfUsuario3.setText("Agosto 13, 1999");
+=======
+        txfUsuario3.setText("Enero 15, 2003");
+>>>>>>> 15eff9367d708e679b836400cad719939e998b18
         txfUsuario3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfUsuario3.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 

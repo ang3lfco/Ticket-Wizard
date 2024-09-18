@@ -134,7 +134,11 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
+<<<<<<< HEAD
             <Property name="text" type="java.lang.String" value="Angel Francisco Martinez"/>
+=======
+            <Property name="text" type="java.lang.String" value="Angel Francisco"/>
+>>>>>>> 15eff9367d708e679b836400cad719939e998b18
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
                 <BevelBorder/>
@@ -157,7 +161,11 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
+<<<<<<< HEAD
             <Property name="text" type="java.lang.String" value="ang3lfco@outlook.com"/>
+=======
+            <Property name="text" type="java.lang.String" value="example@email.com"/>
+>>>>>>> 15eff9367d708e679b836400cad719939e998b18
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
                 <BevelBorder/>
@@ -180,7 +188,11 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
+<<<<<<< HEAD
             <Property name="text" type="java.lang.String" value="Sahuaro 58 CP. 83280"/>
+=======
+            <Property name="text" type="java.lang.String" value="Direccion"/>
+>>>>>>> 15eff9367d708e679b836400cad719939e998b18
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
                 <BevelBorder/>
@@ -203,7 +215,11 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
+<<<<<<< HEAD
             <Property name="text" type="java.lang.String" value="Agosto 13, 1999"/>
+=======
+            <Property name="text" type="java.lang.String" value="Enero 15, 2003"/>
+>>>>>>> 15eff9367d708e679b836400cad719939e998b18
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
                 <BevelBorder/>
