@@ -8,6 +8,7 @@ import dao.BoletoDAO;
 import dao.HistorialCompraVentasDAO;
 import dao.TransaccionDAO;
 import java.sql.SQLException;
+import java.util.List;
 import models.Boleto;
 import models.Transaccion;
 
@@ -24,6 +25,14 @@ public class CompraBoletoService {
         this.boletoDAO = new BoletoDAO();
         this.transaccionDAO = new TransaccionDAO();
         this.historialDAO = new HistorialCompraVentasDAO();
+    }
+    
+    public Boleto getBoletoPorId(int id) throws SQLException {
+        return boletoDAO.getBoletoPorId(id);
+    }
+    
+    public List<Boleto> obtenerBoletosPorEvento(int idEvento) throws SQLException {
+        return boletoDAO.obtenerBoletosPorEvento(idEvento);
     }
     
     public void comprarBoleto(String nSerie, int idComprador, int idVendedor, double monto, double comision) throws SQLException {

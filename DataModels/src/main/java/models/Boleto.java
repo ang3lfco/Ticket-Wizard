@@ -11,18 +11,23 @@ package models;
 public class Boleto {
     private int id;
     private String nSerie;
-    private int eventoId;
+    private int _evento;
     private String fila;
-    private String asiento;
+    private int asiento;
     private Double precioOriginal;
     private Double precioActual;
     private String nControl;
     private String estado; // 'Disponible' o 'Apartado'
 
-    public Boleto(int id, String nSerie, int eventoId, String fila, String asiento, Double precioOriginal, Double precioActual, String nControl, String estado) {
+    public Boleto() {
+    }
+    
+    
+
+    public Boleto(int id, String nSerie, int eventoId, String fila, int asiento, Double precioOriginal, Double precioActual, String nControl, String estado) {
         this.id = id;
         this.nSerie = nSerie;
-        this.eventoId = eventoId;
+        this._evento = eventoId;
         this.fila = fila;
         this.asiento = asiento;
         this.precioOriginal = precioOriginal;
@@ -47,12 +52,12 @@ public class Boleto {
         this.nSerie = nSerie;
     }
 
-    public int getEventoId() {
-        return eventoId;
+    public int getEvento() {
+        return _evento;
     }
 
-    public void setEventoId(int eventoId) {
-        this.eventoId = eventoId;
+    public void setEvento(int _evento) {
+        this._evento = _evento;
     }
 
     public String getFila() {
@@ -63,11 +68,11 @@ public class Boleto {
         this.fila = fila;
     }
 
-    public String getAsiento() {
+    public int getAsiento() {
         return asiento;
     }
 
-    public void setAsiento(String asiento) {
+    public void setAsiento(int asiento) {
         this.asiento = asiento;
     }
 
@@ -127,6 +132,6 @@ public class Boleto {
 
     @Override
     public String toString() {
-        return "Boleto{" + "id=" + id + ", nSerie=" + nSerie + ", eventoId=" + eventoId + ", fila=" + fila + ", asiento=" + asiento + ", precioOriginal=" + precioOriginal + ", precioActual=" + precioActual + ", nControl=" + nControl + ", estado=" + estado + '}';
+        return "Boleto{" + "id=" + id + ", nSerie=" + nSerie + ", eventoId=" + _evento + ", fila=" + fila + ", asiento=" + asiento + ", precioOriginal=" + precioOriginal + ", precioActual=" + precioActual + ", nControl=" + nControl + ", estado=" + estado + '}';
     }
 }

@@ -4,6 +4,10 @@
  */
 package ui;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author martinez
@@ -161,10 +165,14 @@ public class frmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_lblCerrarMouseClicked
 
     private void btnEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEntrarMouseClicked
-        // TODO add your handling code here:
-        frmMenu principal = new frmMenu();
-        this.dispose();
-        principal.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            frmMenu principal = new frmMenu(txfUsuario.getText());
+            this.dispose();
+            principal.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnEntrarMouseClicked
 
 //    /**

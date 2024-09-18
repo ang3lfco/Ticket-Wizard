@@ -4,18 +4,88 @@
  */
 package ui;
 
+import dao.EventoDAO;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import models.Evento;
+
 /**
  *
  * @author martinez
  */
 public class frmMenu extends javax.swing.JFrame {
-
+    private String idUsuario;
     /**
      * Creates new form frmMenu
      */
-    public frmMenu() {
+    public frmMenu(String idUsuario) throws SQLException {
+        this.idUsuario = idUsuario;
         initComponents();
         setLocationRelativeTo(null);
+        cargarEventos();
+    }
+    
+    private void cargarEventos() throws SQLException {
+        pnlContenedor.setLayout(new BoxLayout(pnlContenedor, BoxLayout.Y_AXIS));
+        EventoDAO eventoDAO = new EventoDAO();
+        try {
+            List<Evento> eventos = eventoDAO.obtenerTodosLosEventos();
+            for (Evento evento : eventos) {
+                
+                JPanel panelEvento = new JPanel();
+                panelEvento.setLayout(null);
+                panelEvento.setPreferredSize(new Dimension(738, 102));
+                panelEvento.setBackground(new Color(0, 61, 122));
+
+                JLabel lblNombre = new JLabel("Nombre: " + evento.getNombre());
+                lblNombre.setForeground(Color.WHITE);
+                lblNombre.setBounds(10, 10, 200, 30);
+                panelEvento.add(lblNombre);
+
+                JLabel lblVenue = new JLabel("Venue: " + evento.getVenue());
+                lblVenue.setForeground(Color.WHITE);
+                lblVenue.setBounds(10, 40, 200, 30);
+                panelEvento.add(lblVenue);
+
+                JLabel lblFecha = new JLabel("Fecha: " + evento.getFecha());
+                lblFecha.setForeground(Color.WHITE);
+                lblFecha.setBounds(10, 70, 200, 30);
+                panelEvento.add(lblFecha);
+                
+                panelEvento.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        try {
+                            frmCompra compra = new frmCompra(evento, idUsuario);
+                            compra.setVisible(true);
+                            dispose();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+                
+                pnlContenedor.add(panelEvento);
+                pnlContenedor.add(Box.createRigidArea(new Dimension(0, 10)));
+            }
+
+            pnlContenedor.revalidate();
+            pnlContenedor.repaint();
+        } catch (SQLException e) {
+            System.out.println("Error al cargar los eventos: " + e.getMessage());
+        }
     }
 
     /**
@@ -38,21 +108,6 @@ public class frmMenu extends javax.swing.JFrame {
         btnEntrar5 = new javax.swing.JButton();
         spnContenedor = new javax.swing.JScrollPane();
         pnlContenedor = new javax.swing.JPanel();
-        pnlContenedorEvento = new javax.swing.JPanel();
-        lblImagenPreview = new javax.swing.JLabel();
-        lblNombre = new javax.swing.JLabel();
-        lblVenue = new javax.swing.JLabel();
-        lblFecha = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
         lblSeleccionMenu = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -117,164 +172,15 @@ public class frmMenu extends javax.swing.JFrame {
         pnlContenedor.setBackground(new java.awt.Color(0, 51, 102));
         pnlContenedor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        pnlContenedorEvento.setBackground(new java.awt.Color(0, 61, 122));
-
-        lblImagenPreview.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/coldplay.jpg"))); // NOI18N
-
-        lblNombre.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblNombre.setForeground(new java.awt.Color(255, 255, 255));
-        lblNombre.setText("Coldplay World Tour");
-
-        lblVenue.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblVenue.setForeground(new java.awt.Color(255, 255, 255));
-        lblVenue.setText("Foro Sol");
-
-        lblFecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblFecha.setForeground(new java.awt.Color(255, 255, 255));
-        lblFecha.setText("2024-10-15");
-
-        javax.swing.GroupLayout pnlContenedorEventoLayout = new javax.swing.GroupLayout(pnlContenedorEvento);
-        pnlContenedorEvento.setLayout(pnlContenedorEventoLayout);
-        pnlContenedorEventoLayout.setHorizontalGroup(
-            pnlContenedorEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenedorEventoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlContenedorEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblNombre)
-                    .addComponent(lblVenue)
-                    .addComponent(lblFecha))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 412, Short.MAX_VALUE)
-                .addComponent(lblImagenPreview)
-                .addContainerGap())
-        );
-        pnlContenedorEventoLayout.setVerticalGroup(
-            pnlContenedorEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenedorEventoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlContenedorEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContenedorEventoLayout.createSequentialGroup()
-                        .addComponent(lblNombre)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblVenue)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblFecha))
-                    .addComponent(lblImagenPreview))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel4.setBackground(new java.awt.Color(0, 61, 122));
-
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel16.setText("Romeo y Julieta");
-
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel17.setText("Teatro de los Insurgentes");
-
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setText("2024-10-20");
-
-        jLabel25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/romeoyjulieta.jpg"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel16)
-                    .addComponent(jLabel17)
-                    .addComponent(jLabel18))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel25)
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel25)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel18)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel5.setBackground(new java.awt.Color(0, 61, 122));
-
-        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Cafe-Tacvba.jpg"))); // NOI18N
-
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel20.setText("Café Tacvba 30 años");
-
-        jLabel21.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel21.setText("Palacio de los Deportes");
-
-        jLabel22.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel22.setText("2024-12-27");
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel20)
-                    .addComponent(jLabel21)
-                    .addComponent(jLabel22))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 412, Short.MAX_VALUE)
-                .addComponent(jLabel19)
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel22))
-                    .addComponent(jLabel19))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout pnlContenedorLayout = new javax.swing.GroupLayout(pnlContenedor);
         pnlContenedor.setLayout(pnlContenedorLayout);
         pnlContenedorLayout.setHorizontalGroup(
             pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenedorLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlContenedorEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(30, Short.MAX_VALUE))
+            .addGap(0, 776, Short.MAX_VALUE)
         );
         pnlContenedorLayout.setVerticalGroup(
             pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenedorLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlContenedorEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+            .addGap(0, 389, Short.MAX_VALUE)
         );
 
         spnContenedor.setViewportView(pnlContenedor);
@@ -350,7 +256,7 @@ public class frmMenu extends javax.swing.JFrame {
 
     private void btnPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPerfilMouseClicked
         // TODO add your handling code here:
-        frmPerfil perfil = new frmPerfil();
+        frmPerfil perfil = new frmPerfil(idUsuario);
         this.dispose();
         perfil.setVisible(true);
     }//GEN-LAST:event_btnPerfilMouseClicked
@@ -402,26 +308,11 @@ public class frmMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnEntrar5;
     private javax.swing.JButton btnHistorial;
     private javax.swing.JButton btnPerfil;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JLabel lblBuscarIcono;
     private javax.swing.JLabel lblCerrar;
-    private javax.swing.JLabel lblFecha;
-    private javax.swing.JLabel lblImagenPreview;
     private javax.swing.JLabel lblMinimizar;
-    private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblSeleccionMenu;
-    private javax.swing.JLabel lblVenue;
     private javax.swing.JPanel pnlContenedor;
-    private javax.swing.JPanel pnlContenedorEvento;
     private javax.swing.JPanel pnlPantalla;
     private javax.swing.JScrollPane spnContenedor;
     private javax.swing.JTextField txfBuscar;

@@ -4,16 +4,21 @@
  */
 package ui;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author martinez
  */
 public class frmPerfil extends javax.swing.JFrame {
-
+    private String idUsuario;
     /**
      * Creates new form frmPerfil
      */
-    public frmPerfil() {
+    public frmPerfil(String idUsuario) {
+        this.idUsuario = idUsuario;
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -212,10 +217,14 @@ public class frmPerfil extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarMouseClicked
-        // TODO add your handling code here:
-        frmMenu principal = new frmMenu();
-        principal.setVisible(true);
-        this.dispose();
+        try {
+            // TODO add your handling code here:
+            frmMenu principal = new frmMenu(idUsuario);
+            principal.setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmPerfil.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_lblCerrarMouseClicked
 
 //    /**

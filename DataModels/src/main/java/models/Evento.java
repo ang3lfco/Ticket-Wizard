@@ -20,6 +20,11 @@ public class Evento {
     private String descripcion;
     private String imagenPath;
 
+    public Evento() {
+    }
+    
+    
+
     public Evento(int id, String nombre, Date fecha, String venue, String ciudad, String estado, String descripcion, String imagenPath) {
         this.id = id;
         this.nombre = nombre;
