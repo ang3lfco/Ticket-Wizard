@@ -16,12 +16,12 @@ import models.Transaccion;
  *
  * @author martinez
  */
-public class CompraBoletoService {
+public class BoletoService {
     private BoletoDAO boletoDAO;
     private TransaccionDAO transaccionDAO;
     private HistorialCompraVentasDAO historialDAO;
 
-    public CompraBoletoService() throws SQLException {
+    public BoletoService() throws SQLException {
         this.boletoDAO = new BoletoDAO();
         this.transaccionDAO = new TransaccionDAO();
         this.historialDAO = new HistorialCompraVentasDAO();
@@ -43,8 +43,13 @@ public class CompraBoletoService {
             Transaccion transaccion = new Transaccion(idComprador, idVendedor, monto, comision, new java.util.Date(), true, "Compra");            
             int idTransaccion = transaccionDAO.insertarTransaccion(transaccion);
             historialDAO.insertarHistorial(boleto.getId(), idTransaccion);
-        } else {
+        } 
+        else {
             throw new IllegalArgumentException("El boleto no esta disponible.");
         }
+    }
+    
+    public List<Boleto> getMisBoletos(int idUsuario) throws SQLException{
+        return boletoDAO.getBoletosPorPersona(idUsuario);
     }
 }

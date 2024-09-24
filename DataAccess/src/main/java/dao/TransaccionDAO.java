@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import models.Transaccion;
 
 /**
@@ -19,14 +21,15 @@ import models.Transaccion;
  * @author martinez
  */
 public class TransaccionDAO {
-    private Connection connection;
+    private Connection conexion;
+    
     public TransaccionDAO() throws SQLException {
-        this.connection = mysqlConn.abrirConn();
+        this.conexion = mysqlConn.abrirConn();
     }
     
     public int insertarTransaccion(Transaccion transaccion) throws SQLException {
-        String query = "INSERT INTO Transacciones (_idComprador, _idVendedor, monto, comision, adquisicion, pagado, tipo) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        String query = "INSERT INTO Transacciones (_idComprador, _idVendedor, monto, comision, adquisicion, pagado, tipo) VALUES (?,?,?,?,?,?,?)";
+        try (PreparedStatement stmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, transaccion.getIdComprador());
             stmt.setInt(2, transaccion.getIdVendedor());
             stmt.setDouble(3, transaccion.getMonto());
@@ -36,18 +39,40 @@ public class TransaccionDAO {
             stmt.setString(7, transaccion.getTipo());
 
             int affectedRows = stmt.executeUpdate();
-
             if (affectedRows == 0) {
-                throw new SQLException("Error al insertar la transaccion, no se creo ninguna fila.");
+                throw new SQLException("Error al insertar Transaccion, no hubo filas creadas.");
             }
-
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
+                if (generatedKeys.next()){
                     return generatedKeys.getInt(1);
-                } else {
-                    throw new SQLException("Error al insertar la transaccion, no se obtuvo el ID.");
+                } 
+                else {
+                    throw new SQLException("Error al insertar Transaccion, no se obtuvo el ID.");
                 }
             }
         }
+    }
+    
+    public List<Transaccion> getHistorialPorPersona(int idUsuario) throws SQLException{
+        List<Transaccion> historialTransacciones = new ArrayList<>();
+        String query = "SELECT * FROM Transacciones WHERE _idComprador = ?";
+        try(PreparedStatement pstm = conexion.prepareStatement(query)){
+            pstm.setInt(1, idUsuario);
+            ResultSet rs = pstm.executeQuery();
+            while(rs.next()){
+                Transaccion transaccion = new Transaccion(
+                        rs.getInt("_id"),
+                        rs.getInt("_idComprador"),
+                        rs.getInt("_idVendedor"),
+                        rs.getDouble("monto"),
+                        rs.getDouble("comision"),
+                        new java.util.Date(rs.getTimestamp("adquisicion").getTime()),
+                        rs.getBoolean("pagado"),
+                        rs.getString("tipo")
+                );
+                historialTransacciones.add(transaccion);
+            }
+        }
+        return historialTransacciones;
     }
 }

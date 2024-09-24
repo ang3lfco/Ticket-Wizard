@@ -8,7 +8,7 @@ import dao.BoletoDAO;
 import dao.HistorialCompraVentasDAO;
 import dao.TransaccionDAO;
 import java.sql.SQLException;
-import services.CompraBoletoService;
+import services.BoletoService;
 
 /**
  *
@@ -20,7 +20,7 @@ public class Test {
             BoletoDAO boletoDAO = new BoletoDAO();
             TransaccionDAO transaccionDAO = new TransaccionDAO();
             HistorialCompraVentasDAO historialDAO = new HistorialCompraVentasDAO();
-            CompraBoletoService compraBoletoService = new CompraBoletoService();
+            BoletoService compraBoletoService = new BoletoService();
 
             // Parámetros de ejemplo
             String numeroSerie = "A1B2C3D1"; 

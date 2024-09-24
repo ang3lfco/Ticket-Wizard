@@ -18,6 +18,17 @@ public class Persona {
     private Date fechaNacimiento;
     private Double saldo;
     private String contrasena;
+    
+    public Persona(){}
+    
+    public Persona(String nombre, String correo, String domicilio, Date fechaNacimiento, Double saldo, String contrasena) {
+        this.nombre = nombre;
+        this.correo = correo;
+        this.domicilio = domicilio;
+        this.fechaNacimiento = fechaNacimiento;
+        this.saldo = saldo;
+        this.contrasena = contrasena;
+    }
 
     public Persona(int id, String nombre, String correo, String domicilio, Date fechaNacimiento, Double saldo, String contrasena) {
         this.id = id;
@@ -28,8 +39,6 @@ public class Persona {
         this.saldo = saldo;
         this.contrasena = contrasena;
     }
-    
-    
 
     public int getId() {
         return id;

@@ -19,15 +19,12 @@ public class Boleto {
     private String nControl;
     private String estado; // 'Disponible' o 'Apartado'
 
-    public Boleto() {
-    }
-    
-    
-
-    public Boleto(int id, String nSerie, int eventoId, String fila, int asiento, Double precioOriginal, Double precioActual, String nControl, String estado) {
+    public Boleto() {}
+ 
+    public Boleto(int id, String nSerie, int _evento, String fila, int asiento, Double precioOriginal, Double precioActual, String nControl, String estado) {
         this.id = id;
         this.nSerie = nSerie;
-        this._evento = eventoId;
+        this._evento = _evento;
         this.fila = fila;
         this.asiento = asiento;
         this.precioOriginal = precioOriginal;

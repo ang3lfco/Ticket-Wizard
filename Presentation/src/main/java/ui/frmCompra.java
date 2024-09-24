@@ -12,7 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import models.Boleto;
 import models.Evento;
-import services.CompraBoletoService;
+import services.BoletoService;
 
 /**
  *
@@ -20,7 +20,7 @@ import services.CompraBoletoService;
  */
 public class frmCompra extends javax.swing.JFrame {
     private Evento eventoSeleccionado;
-    private CompraBoletoService boletoBusiness;
+    private BoletoService boletoBusiness;
     private String idUsuario;
     /**
      * Creates new form frmCompra
@@ -28,7 +28,7 @@ public class frmCompra extends javax.swing.JFrame {
     public frmCompra(Evento evento, String idUsuario) throws SQLException {
         this.idUsuario = idUsuario;
         this.eventoSeleccionado = evento;
-        this.boletoBusiness = new CompraBoletoService();
+        this.boletoBusiness = new BoletoService();
         initComponents();
         cargarDatosEvento();
         setLocationRelativeTo(null);
@@ -36,7 +36,6 @@ public class frmCompra extends javax.swing.JFrame {
     
     private void cargarDatosEvento() {
         setTitle("Compra de boletos para: " + eventoSeleccionado.getNombre());
-
         try {
             List<Boleto> boletosDisponibles = boletoBusiness.obtenerBoletosPorEvento(eventoSeleccionado.getId());
 

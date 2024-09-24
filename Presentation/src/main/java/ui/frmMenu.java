@@ -4,22 +4,25 @@
  */
 package ui;
 
-import dao.EventoDAO;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import models.Boleto;
 import models.Evento;
+import models.Transaccion;
+import services.BoletoService;
+import services.EventoService;
+import services.TransaccionService;
 
 /**
  *
@@ -27,6 +30,9 @@ import models.Evento;
  */
 public class frmMenu extends javax.swing.JFrame {
     private String idUsuario;
+    private EventoService eventoService;
+    private BoletoService boletoService;
+    private TransaccionService transaccionService;
     /**
      * Creates new form frmMenu
      */
@@ -34,16 +40,17 @@ public class frmMenu extends javax.swing.JFrame {
         this.idUsuario = idUsuario;
         initComponents();
         setLocationRelativeTo(null);
-        cargarEventos();
+        
     }
     
     private void cargarEventos() throws SQLException {
+        lblSeleccionDelMenu.setText("Todos los eventos:");
+        pnlContenedor.removeAll();
         pnlContenedor.setLayout(new BoxLayout(pnlContenedor, BoxLayout.Y_AXIS));
-        EventoDAO eventoDAO = new EventoDAO();
+        eventoService = new EventoService();
         try {
-            List<Evento> eventos = eventoDAO.obtenerTodosLosEventos();
+            List<Evento> eventos = eventoService.obtenerTodosLosEventos();
             for (Evento evento : eventos) {
-                
                 JPanel panelEvento = new JPanel();
                 panelEvento.setLayout(null);
                 panelEvento.setPreferredSize(new Dimension(738, 102));
@@ -80,12 +87,91 @@ public class frmMenu extends javax.swing.JFrame {
                 pnlContenedor.add(panelEvento);
                 pnlContenedor.add(Box.createRigidArea(new Dimension(0, 10)));
             }
-
             pnlContenedor.revalidate();
             pnlContenedor.repaint();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println("Error al cargar los eventos: " + e.getMessage());
         }
+    }
+    
+    private void cargarMisBoletos() throws SQLException{
+        lblSeleccionDelMenu.setText("Tus boletos:");
+        pnlContenedor.removeAll();
+        pnlContenedor.setLayout(new BoxLayout(pnlContenedor, BoxLayout.Y_AXIS));
+        boletoService = new BoletoService();
+        try{
+            List<Boleto> boletos = boletoService.getMisBoletos(Integer.parseInt(idUsuario));
+            for(Boleto boleto : boletos){
+                JPanel panelEvento = new JPanel();
+                panelEvento.setLayout(null);
+                panelEvento.setPreferredSize(new Dimension(738, 102));
+                panelEvento.setBackground(new Color(0, 61, 122));
+
+                JLabel lblNombre = new JLabel("nSerie: " + boleto.getnSerie());
+                lblNombre.setForeground(Color.WHITE);
+                lblNombre.setBounds(10, 10, 200, 30);
+                panelEvento.add(lblNombre);
+
+                JLabel lblVenue = new JLabel("Fila: " + boleto.getFila());
+                lblVenue.setForeground(Color.WHITE);
+                lblVenue.setBounds(10, 40, 200, 30);
+                panelEvento.add(lblVenue);
+
+                JLabel lblFecha = new JLabel("Asiento: " + boleto.getAsiento());
+                lblFecha.setForeground(Color.WHITE);
+                lblFecha.setBounds(10, 70, 200, 30);
+                panelEvento.add(lblFecha);
+                
+                pnlContenedor.add(panelEvento);
+                pnlContenedor.add(Box.createRigidArea(new Dimension(0, 10)));
+            }
+            pnlContenedor.revalidate();
+            pnlContenedor.repaint();
+        }
+        catch (SQLException e) {
+            System.out.println("Error al cargar los boletos: " + e.getMessage());
+        }
+    }
+    
+    private void CargarHistorial() throws SQLException{
+        lblSeleccionDelMenu.setText("Historial:");
+        pnlContenedor.removeAll();
+        pnlContenedor.setLayout(new BoxLayout(pnlContenedor, BoxLayout.Y_AXIS));
+        transaccionService = new TransaccionService();
+        try{
+            List<Transaccion> historial = transaccionService.getHistorial(Integer.parseInt(idUsuario));
+            for(Transaccion t : historial){
+                JPanel panelEvento = new JPanel();
+                panelEvento.setLayout(null);
+                panelEvento.setPreferredSize(new Dimension(738, 102));
+                panelEvento.setBackground(new Color(0, 61, 122));
+
+                JLabel lblNombre = new JLabel("ID: " + t.getId());
+                lblNombre.setForeground(Color.WHITE);
+                lblNombre.setBounds(10, 10, 200, 30);
+                panelEvento.add(lblNombre);
+
+                JLabel lblVenue = new JLabel("Monto: " + t.getMonto());
+                lblVenue.setForeground(Color.WHITE);
+                lblVenue.setBounds(10, 40, 200, 30);
+                panelEvento.add(lblVenue);
+
+                JLabel lblFecha = new JLabel("Fecha de Adquisicion: " + t.getAdquisicion());
+                lblFecha.setForeground(Color.WHITE);
+                lblFecha.setBounds(10, 70, 400, 30);
+                panelEvento.add(lblFecha);
+                
+                pnlContenedor.add(panelEvento);
+                pnlContenedor.add(Box.createRigidArea(new Dimension(0, 10)));
+            }
+            pnlContenedor.revalidate();
+            pnlContenedor.repaint();
+        }
+        catch (SQLException e) {
+            System.out.println("Error al cargar el Historial de Transacciones: " + e.getMessage());
+        }
+        
     }
 
     /**
@@ -104,11 +190,11 @@ public class frmMenu extends javax.swing.JFrame {
         txfBuscar = new javax.swing.JTextField();
         lblCerrar = new javax.swing.JLabel();
         lblMinimizar = new javax.swing.JLabel();
-        btnEntrar4 = new javax.swing.JButton();
-        btnEntrar5 = new javax.swing.JButton();
+        btnEventos = new javax.swing.JButton();
+        btnMisBoletos = new javax.swing.JButton();
         spnContenedor = new javax.swing.JScrollPane();
         pnlContenedor = new javax.swing.JPanel();
-        lblSeleccionMenu = new javax.swing.JLabel();
+        lblSeleccionDelMenu = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -133,6 +219,11 @@ public class frmMenu extends javax.swing.JFrame {
         btnHistorial.setText("Historial");
         btnHistorial.setBorder(null);
         btnHistorial.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHistorial.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnHistorialMouseClicked(evt);
+            }
+        });
 
         lblBuscarIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buscar.png"))); // NOI18N
 
@@ -152,19 +243,29 @@ public class frmMenu extends javax.swing.JFrame {
 
         lblMinimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minimizar.png"))); // NOI18N
 
-        btnEntrar4.setBackground(new java.awt.Color(0, 154, 125));
-        btnEntrar4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnEntrar4.setForeground(new java.awt.Color(255, 255, 255));
-        btnEntrar4.setText("Proximos eventos");
-        btnEntrar4.setBorder(null);
-        btnEntrar4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEventos.setBackground(new java.awt.Color(0, 102, 83));
+        btnEventos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEventos.setForeground(new java.awt.Color(255, 255, 255));
+        btnEventos.setText("Proximos eventos");
+        btnEventos.setBorder(null);
+        btnEventos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEventos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEventosMouseClicked(evt);
+            }
+        });
 
-        btnEntrar5.setBackground(new java.awt.Color(0, 102, 83));
-        btnEntrar5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnEntrar5.setForeground(new java.awt.Color(255, 255, 255));
-        btnEntrar5.setText("Tus boletos");
-        btnEntrar5.setBorder(null);
-        btnEntrar5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnMisBoletos.setBackground(new java.awt.Color(0, 102, 83));
+        btnMisBoletos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnMisBoletos.setForeground(new java.awt.Color(255, 255, 255));
+        btnMisBoletos.setText("Tus boletos");
+        btnMisBoletos.setBorder(null);
+        btnMisBoletos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnMisBoletos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnMisBoletosMouseClicked(evt);
+            }
+        });
 
         spnContenedor.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         spnContenedor.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -185,9 +286,9 @@ public class frmMenu extends javax.swing.JFrame {
 
         spnContenedor.setViewportView(pnlContenedor);
 
-        lblSeleccionMenu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblSeleccionMenu.setForeground(new java.awt.Color(255, 255, 255));
-        lblSeleccionMenu.setText("Proximos eventos:");
+        lblSeleccionDelMenu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblSeleccionDelMenu.setForeground(new java.awt.Color(255, 255, 255));
+        lblSeleccionDelMenu.setText("Proximos eventos (Todos):");
 
         javax.swing.GroupLayout pnlPantallaLayout = new javax.swing.GroupLayout(pnlPantalla);
         pnlPantalla.setLayout(pnlPantallaLayout);
@@ -202,9 +303,9 @@ public class frmMenu extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEntrar4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEventos, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEntrar5, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnMisBoletos, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblBuscarIcono)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -214,7 +315,7 @@ public class frmMenu extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblCerrar))
                     .addGroup(pnlPantallaLayout.createSequentialGroup()
-                        .addComponent(lblSeleccionMenu)
+                        .addComponent(lblSeleccionDelMenu)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -230,11 +331,11 @@ public class frmMenu extends javax.swing.JFrame {
                         .addGroup(pnlPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEntrar4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEntrar5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnEventos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnMisBoletos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(txfBuscar, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addGap(52, 52, 52)
-                .addComponent(lblSeleccionMenu)
+                .addComponent(lblSeleccionDelMenu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(spnContenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
                 .addContainerGap())
@@ -256,9 +357,13 @@ public class frmMenu extends javax.swing.JFrame {
 
     private void btnPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPerfilMouseClicked
         // TODO add your handling code here:
-        frmPerfil perfil = new frmPerfil(idUsuario);
-        this.dispose();
-        perfil.setVisible(true);
+        try {
+            frmPerfil perfil = new frmPerfil(idUsuario);
+            perfil.setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnPerfilMouseClicked
 
     private void lblCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarMouseClicked
@@ -267,6 +372,33 @@ public class frmMenu extends javax.swing.JFrame {
         login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_lblCerrarMouseClicked
+
+    private void btnMisBoletosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMisBoletosMouseClicked
+        try {
+            // TODO add your handling code here:
+            cargarMisBoletos();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnMisBoletosMouseClicked
+
+    private void btnEventosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEventosMouseClicked
+        try {
+            // TODO add your handling code here:
+            cargarEventos();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnEventosMouseClicked
+
+    private void btnHistorialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHistorialMouseClicked
+        try {
+            // TODO add your handling code here:
+            CargarHistorial();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnHistorialMouseClicked
 
 //    /**
 //     * @param args the command line arguments
@@ -304,14 +436,14 @@ public class frmMenu extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEntrar4;
-    private javax.swing.JButton btnEntrar5;
+    private javax.swing.JButton btnEventos;
     private javax.swing.JButton btnHistorial;
+    private javax.swing.JButton btnMisBoletos;
     private javax.swing.JButton btnPerfil;
     private javax.swing.JLabel lblBuscarIcono;
     private javax.swing.JLabel lblCerrar;
     private javax.swing.JLabel lblMinimizar;
-    private javax.swing.JLabel lblSeleccionMenu;
+    private javax.swing.JLabel lblSeleccionDelMenu;
     private javax.swing.JPanel pnlContenedor;
     private javax.swing.JPanel pnlPantalla;
     private javax.swing.JScrollPane spnContenedor;

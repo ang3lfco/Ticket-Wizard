@@ -7,6 +7,7 @@ package ui;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import services.PersonaService;
 
 /**
  *
@@ -14,13 +15,21 @@ import java.util.logging.Logger;
  */
 public class frmPerfil extends javax.swing.JFrame {
     private String idUsuario;
+    private PersonaService personaService;
     /**
      * Creates new form frmPerfil
      */
-    public frmPerfil(String idUsuario) {
+    public frmPerfil(String idUsuario) throws SQLException {
+        personaService = new PersonaService();
         this.idUsuario = idUsuario;
         initComponents();
         setLocationRelativeTo(null);
+        txfNombre.setText(personaService.getInformacion(Integer.parseInt(idUsuario)).getNombre());
+        txfCorreo.setText(personaService.getInformacion(Integer.parseInt(idUsuario)).getCorreo());
+        txfDomicilio.setText(personaService.getInformacion(Integer.parseInt(idUsuario)).getDomicilio());
+        txfFechaNacimiento.setText(personaService.getInformacion(Integer.parseInt(idUsuario)).getFechaNacimiento().toString());
+        pwfContrasena.setText(personaService.getInformacion(Integer.parseInt(idUsuario)).getContrasena());
+        txfSaldo.setText(String.valueOf(personaService.getInformacion(Integer.parseInt(idUsuario)).getSaldo()));
     }
 
     /**
@@ -34,17 +43,17 @@ public class frmPerfil extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        txfUsuario = new javax.swing.JTextField();
-        txfUsuario1 = new javax.swing.JTextField();
-        txfUsuario2 = new javax.swing.JTextField();
-        txfUsuario3 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txfNombre = new javax.swing.JTextField();
+        txfCorreo = new javax.swing.JTextField();
+        txfDomicilio = new javax.swing.JTextField();
+        txfFechaNacimiento = new javax.swing.JTextField();
+        pwfContrasena = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        txfUsuario4 = new javax.swing.JTextField();
+        txfSaldo = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         lblCerrar = new javax.swing.JLabel();
         lblMinimizar = new javax.swing.JLabel();
@@ -57,44 +66,44 @@ public class frmPerfil extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profile.jpg"))); // NOI18N
 
-        txfUsuario.setBackground(new java.awt.Color(0, 51, 102));
-        txfUsuario.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        txfUsuario.setForeground(new java.awt.Color(255, 255, 255));
-        txfUsuario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txfUsuario.setText("Angel Francisco");
-        txfUsuario.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        txfUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txfNombre.setBackground(new java.awt.Color(0, 51, 102));
+        txfNombre.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txfNombre.setForeground(new java.awt.Color(255, 255, 255));
+        txfNombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfNombre.setText("Angel Francisco");
+        txfNombre.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txfNombre.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
-        txfUsuario1.setBackground(new java.awt.Color(0, 51, 102));
-        txfUsuario1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        txfUsuario1.setForeground(new java.awt.Color(255, 255, 255));
-        txfUsuario1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txfUsuario1.setText("example@email.com");
-        txfUsuario1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        txfUsuario1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txfCorreo.setBackground(new java.awt.Color(0, 51, 102));
+        txfCorreo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txfCorreo.setForeground(new java.awt.Color(255, 255, 255));
+        txfCorreo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfCorreo.setText("example@email.com");
+        txfCorreo.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txfCorreo.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
-        txfUsuario2.setBackground(new java.awt.Color(0, 51, 102));
-        txfUsuario2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        txfUsuario2.setForeground(new java.awt.Color(255, 255, 255));
-        txfUsuario2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txfUsuario2.setText("Direccion");
-        txfUsuario2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        txfUsuario2.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txfDomicilio.setBackground(new java.awt.Color(0, 51, 102));
+        txfDomicilio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txfDomicilio.setForeground(new java.awt.Color(255, 255, 255));
+        txfDomicilio.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfDomicilio.setText("Direccion");
+        txfDomicilio.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txfDomicilio.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
-        txfUsuario3.setBackground(new java.awt.Color(0, 51, 102));
-        txfUsuario3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        txfUsuario3.setForeground(new java.awt.Color(255, 255, 255));
-        txfUsuario3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txfUsuario3.setText("Enero 15, 2003");
-        txfUsuario3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        txfUsuario3.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txfFechaNacimiento.setBackground(new java.awt.Color(0, 51, 102));
+        txfFechaNacimiento.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txfFechaNacimiento.setForeground(new java.awt.Color(255, 255, 255));
+        txfFechaNacimiento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfFechaNacimiento.setText("Enero 15, 2003");
+        txfFechaNacimiento.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txfFechaNacimiento.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
-        jPasswordField1.setBackground(new java.awt.Color(0, 51, 102));
-        jPasswordField1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jPasswordField1.setForeground(new java.awt.Color(255, 255, 255));
-        jPasswordField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPasswordField1.setText("jPasswordField1");
-        jPasswordField1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        pwfContrasena.setBackground(new java.awt.Color(0, 51, 102));
+        pwfContrasena.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        pwfContrasena.setForeground(new java.awt.Color(255, 255, 255));
+        pwfContrasena.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        pwfContrasena.setText("jPasswordField1");
+        pwfContrasena.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -116,13 +125,13 @@ public class frmPerfil extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Contraseña:");
 
-        txfUsuario4.setBackground(new java.awt.Color(0, 51, 102));
-        txfUsuario4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        txfUsuario4.setForeground(new java.awt.Color(255, 255, 255));
-        txfUsuario4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txfUsuario4.setText("$ 1200.00");
-        txfUsuario4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        txfUsuario4.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txfSaldo.setBackground(new java.awt.Color(0, 51, 102));
+        txfSaldo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txfSaldo.setForeground(new java.awt.Color(255, 255, 255));
+        txfSaldo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfSaldo.setText("$ 1200.00");
+        txfSaldo.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txfSaldo.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -145,19 +154,19 @@ public class frmPerfil extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txfUsuario4, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txfSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txfUsuario3)
+                        .addComponent(txfFechaNacimiento)
                         .addComponent(jLabel5)
-                        .addComponent(txfUsuario1)
-                        .addComponent(txfUsuario2)
+                        .addComponent(txfCorreo)
+                        .addComponent(txfDomicilio)
                         .addComponent(jLabel4)
-                        .addComponent(txfUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                        .addComponent(txfNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addComponent(jLabel3))
                     .addComponent(jLabel7)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pwfContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -178,27 +187,27 @@ public class frmPerfil extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txfUsuario1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txfCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txfUsuario2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txfDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txfUsuario3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txfFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pwfContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txfUsuario4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txfSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
 
@@ -271,13 +280,13 @@ public class frmPerfil extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JLabel lblCerrar;
     private javax.swing.JLabel lblMinimizar;
-    private javax.swing.JTextField txfUsuario;
-    private javax.swing.JTextField txfUsuario1;
-    private javax.swing.JTextField txfUsuario2;
-    private javax.swing.JTextField txfUsuario3;
-    private javax.swing.JTextField txfUsuario4;
+    private javax.swing.JPasswordField pwfContrasena;
+    private javax.swing.JTextField txfCorreo;
+    private javax.swing.JTextField txfDomicilio;
+    private javax.swing.JTextField txfFechaNacimiento;
+    private javax.swing.JTextField txfNombre;
+    private javax.swing.JTextField txfSaldo;
     // End of variables declaration//GEN-END:variables
 }

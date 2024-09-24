@@ -49,7 +49,7 @@ public class BoletoDAO {
     
     public List<Boleto> obtenerBoletosPorEvento(int idEvento) throws SQLException {
         List<Boleto> boletos = new ArrayList<>();
-        String sql = "SELECT * FROM Boletos WHERE _evento = ? AND estado = 'Disponible'"; // Solo obtener boletos disponibles
+        String sql = "SELECT * FROM Boletos WHERE _evento = ? AND estado = 'Disponible'";
 
         try (PreparedStatement statement = conexion.prepareStatement(sql)) {
             statement.setInt(1, idEvento);
@@ -81,15 +81,15 @@ public class BoletoDAO {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 boleto = new Boleto(
-                    rs.getInt("_id"),
-                    rs.getString("nSerie"),
-                    rs.getInt("_evento"),
-                    rs.getString("fila"),
-                    rs.getInt("asiento"),
-                    rs.getDouble("precioOriginal"),
-                    rs.getDouble("precioActual"),
-                    rs.getString("nControl"),
-                    rs.getString("estado")
+                        rs.getInt("_id"),
+                        rs.getString("nSerie"),
+                        rs.getInt("_evento"),
+                        rs.getString("fila"),
+                        rs.getInt("asiento"),
+                        rs.getDouble("precioOriginal"),
+                        rs.getDouble("precioActual"),
+                        rs.getString("nControl"),
+                        rs.getString("estado")
                 );
             }
         }
@@ -109,5 +109,44 @@ public class BoletoDAO {
             pstmt.setString(8, boleto.getnSerie());
             pstmt.executeUpdate();
         }
+    }
+    
+    public List<Boleto> getBoletosPorPersona(int idUsuario) throws SQLException{
+        List<Boleto> boletos = new ArrayList<>();
+        
+        String sql = "SELECT b._id, b.nSerie, b._evento, b.fila, b.asiento, b.precioOriginal, b.precioActual, b.nControl, b.estado, t.adquisicion " +
+                 "FROM Boletos b " +
+                 "JOIN HistorialCompraVentas hcv ON b._id = hcv._boleto " +
+                 "JOIN Transacciones t ON hcv._transaccion = t._id " +
+                 "WHERE t._idComprador = ? " +
+                 "AND t.adquisicion = ( " +
+                 "    SELECT MAX(t2.adquisicion) " +
+                 "    FROM Transacciones t2 " +
+                 "    JOIN HistorialCompraVentas hcv2 ON t2._id = hcv2._transaccion " +
+                 "    WHERE hcv2._boleto = b._id " +
+                 ") " +
+                 "ORDER BY t.adquisicion DESC";
+        
+        try(PreparedStatement pstm = conexion.prepareStatement(sql)){
+            pstm.setInt(1, idUsuario);
+            
+            try(ResultSet rs = pstm.executeQuery()){
+                while(rs.next()){
+                    Boleto boleto = new Boleto();
+                    boleto.setId(rs.getInt("_id"));
+                    boleto.setnSerie(rs.getString("nSerie"));
+                    boleto.setEvento(rs.getInt("_evento"));
+                    boleto.setFila(rs.getString("fila"));
+                    boleto.setAsiento(rs.getInt("asiento"));
+                    boleto.setPrecioOriginal(rs.getDouble("precioOriginal"));
+                    boleto.setPrecioActual(rs.getDouble("precioActual"));
+                    boleto.setnControl(rs.getString("nControl"));
+                    boleto.setEstado(rs.getString("estado"));
+                    
+                    boletos.add(boleto);
+                }
+            }
+        }
+        return boletos;
     }
 }

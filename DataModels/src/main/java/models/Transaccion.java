@@ -21,10 +21,20 @@ public class Transaccion {
     private boolean pagado;
     private String tipo; // 'Compra' o 'Reventa'
 
-    public Transaccion() {
-    }
+    public Transaccion(){}
     
     public Transaccion(int idComprador, int idVendedor, Double monto, Double comision, Date adquisicion, boolean pagado, String tipo) {
+        this.idComprador = idComprador;
+        this.idVendedor = idVendedor;
+        this.monto = monto;
+        this.comision = comision;
+        this.adquisicion = adquisicion;
+        this.pagado = pagado;
+        this.tipo = tipo;
+    }
+
+    public Transaccion(int id, int idComprador, int idVendedor, Double monto, Double comision, Date adquisicion, boolean pagado, String tipo) {
+        this.id = id;
         this.idComprador = idComprador;
         this.idVendedor = idVendedor;
         this.monto = monto;

@@ -38,7 +38,7 @@ public class frmLogin extends javax.swing.JFrame {
         lblLogo = new javax.swing.JLabel();
         lblCerrar = new javax.swing.JLabel();
         lblMinimizar = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblRegistrarme = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -84,11 +84,16 @@ public class frmLogin extends javax.swing.JFrame {
 
         lblMinimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minimizar.png"))); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Registrarme");
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblRegistrarme.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblRegistrarme.setForeground(new java.awt.Color(255, 255, 255));
+        lblRegistrarme.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRegistrarme.setText("Registrarme");
+        lblRegistrarme.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblRegistrarme.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblRegistrarmeMouseClicked(evt);
+            }
+        });
 
         jPasswordField1.setBackground(new java.awt.Color(0, 51, 102));
         jPasswordField1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -103,7 +108,7 @@ public class frmLogin extends javax.swing.JFrame {
             pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblLogo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblRegistrarme, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlContenedorLayout.createSequentialGroup()
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenedorLayout.createSequentialGroup()
@@ -139,7 +144,7 @@ public class frmLogin extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addComponent(lblRegistrarme)
                 .addGap(52, 52, 52)
                 .addComponent(jLabel1)
                 .addGap(38, 38, 38))
@@ -174,6 +179,17 @@ public class frmLogin extends javax.swing.JFrame {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEntrarMouseClicked
+
+    private void lblRegistrarmeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarmeMouseClicked
+        try {
+            // TODO add your handling code here:
+            frmRegistro registro = new frmRegistro();
+            registro.setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_lblRegistrarmeMouseClicked
 
 //    /**
 //     * @param args the command line arguments
@@ -213,11 +229,11 @@ public class frmLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JLabel lblCerrar;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblMinimizar;
+    private javax.swing.JLabel lblRegistrarme;
     private javax.swing.JPanel pnlContenedor;
     private javax.swing.JTextField txfUsuario;
     // End of variables declaration//GEN-END:variables
