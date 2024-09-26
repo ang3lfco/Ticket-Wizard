@@ -23,8 +23,16 @@ public class Evento {
     public Evento() {
     }
     
+    public Evento(String nombre, Date fecha, String venue, String ciudad, String estado, String descripcion, String imagenPath) {
+        this.nombre = nombre;
+        this.fecha = fecha;
+        this.venue = venue;
+        this.ciudad = ciudad;
+        this.estado = estado;
+        this.descripcion = descripcion;
+        this.imagenPath = imagenPath;
+    }
     
-
     public Evento(int id, String nombre, Date fecha, String venue, String ciudad, String estado, String descripcion, String imagenPath) {
         this.id = id;
         this.nombre = nombre;
