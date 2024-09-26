@@ -4,7 +4,10 @@
  */
 package services;
 
+
+import Interfaces.IEventoService;
 import dao.EventoDAO;
+import interfaces.IEventoDAO;
 import java.sql.SQLException;
 import java.util.List;
 import models.Evento;
@@ -13,18 +16,25 @@ import models.Evento;
  *
  * @author martinez
  */
-public class EventoService {
-    private EventoDAO eventoDAO;
+public class EventoService implements IEventoService{
+    private final IEventoDAO eventoDAO;
 
     public EventoService() throws SQLException {
-        eventoDAO = new EventoDAO();
+        this.eventoDAO = new EventoDAO();
     }
     
-    public List<Evento> obtenerTodosLosEventos() throws SQLException {
-        return eventoDAO.obtenerTodosLosEventos();
+    @Override
+    public int CrearEvento(Evento evento) throws SQLException{
+        return eventoDAO.insertarEvento(evento);
     }
-
-    public Evento obtenerEventoPorId(int id) throws SQLException {
-        return eventoDAO.obtenerEventoPorId(id);
+    
+    @Override
+    public List<Evento> getTodosLosEventos() throws SQLException {
+        return eventoDAO.getEventos();
+    }
+    
+    @Override
+    public Evento getEventoPorId(int id) throws SQLException {
+        return eventoDAO.getEventoPorId(id);
     }
 }

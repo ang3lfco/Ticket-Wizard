@@ -4,7 +4,9 @@
  */
 package services;
 
+import Interfaces.ITransaccionService;
 import dao.TransaccionDAO;
+import interfaces.ITransaccionDAO;
 import java.sql.SQLException;
 import java.util.List;
 import models.Transaccion;
@@ -13,13 +15,14 @@ import models.Transaccion;
  *
  * @author martinez
  */
-public class TransaccionService {
-    private TransaccionDAO transaccionDAO;
+public class TransaccionService implements ITransaccionService{
+    private final ITransaccionDAO transaccionDAO;
     
     public TransaccionService() throws SQLException{
         this.transaccionDAO = new TransaccionDAO();
     }
     
+    @Override
     public List<Transaccion> getHistorial(int idUsuario) throws SQLException{
         return transaccionDAO.getHistorialPorPersona(idUsuario);
     }
