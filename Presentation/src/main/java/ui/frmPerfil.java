@@ -4,6 +4,7 @@
  */
 package ui;
 
+import interfaces.IPersonaService;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,13 +16,14 @@ import services.PersonaService;
  */
 public class frmPerfil extends javax.swing.JFrame {
     private String idUsuario;
-    private PersonaService personaService;
+    private IPersonaService personaService;
     /**
      * Creates new form frmPerfil
      */
     public frmPerfil(String idUsuario) throws SQLException {
         personaService = new PersonaService();
         this.idUsuario = idUsuario;
+        this.personaService = new PersonaService();
         initComponents();
         setLocationRelativeTo(null);
         txfNombre.setText(personaService.getInformacion(Integer.parseInt(idUsuario)).getNombre());
@@ -64,14 +66,13 @@ public class frmPerfil extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 51, 102));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profile.jpg"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profile.png"))); // NOI18N
 
         txfNombre.setBackground(new java.awt.Color(0, 51, 102));
         txfNombre.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txfNombre.setForeground(new java.awt.Color(255, 255, 255));
         txfNombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txfNombre.setText("Angel Francisco");
-        txfNombre.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfNombre.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         txfCorreo.setBackground(new java.awt.Color(0, 51, 102));
@@ -79,7 +80,6 @@ public class frmPerfil extends javax.swing.JFrame {
         txfCorreo.setForeground(new java.awt.Color(255, 255, 255));
         txfCorreo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txfCorreo.setText("example@email.com");
-        txfCorreo.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfCorreo.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         txfDomicilio.setBackground(new java.awt.Color(0, 51, 102));
@@ -87,7 +87,6 @@ public class frmPerfil extends javax.swing.JFrame {
         txfDomicilio.setForeground(new java.awt.Color(255, 255, 255));
         txfDomicilio.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txfDomicilio.setText("Direccion");
-        txfDomicilio.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfDomicilio.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         txfFechaNacimiento.setBackground(new java.awt.Color(0, 51, 102));
@@ -95,7 +94,6 @@ public class frmPerfil extends javax.swing.JFrame {
         txfFechaNacimiento.setForeground(new java.awt.Color(255, 255, 255));
         txfFechaNacimiento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txfFechaNacimiento.setText("Enero 15, 2003");
-        txfFechaNacimiento.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfFechaNacimiento.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         pwfContrasena.setBackground(new java.awt.Color(0, 51, 102));
@@ -103,7 +101,6 @@ public class frmPerfil extends javax.swing.JFrame {
         pwfContrasena.setForeground(new java.awt.Color(255, 255, 255));
         pwfContrasena.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         pwfContrasena.setText("jPasswordField1");
-        pwfContrasena.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -130,7 +127,6 @@ public class frmPerfil extends javax.swing.JFrame {
         txfSaldo.setForeground(new java.awt.Color(255, 255, 255));
         txfSaldo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txfSaldo.setText("$ 1200.00");
-        txfSaldo.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfSaldo.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N

@@ -239,9 +239,14 @@ public class frmRegistro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblCerrar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrar1MouseClicked
-        frmLogin login = new frmLogin();
-        login.setVisible(true);
-        this.dispose();
+        frmLogin login;
+        try {
+            login = new frmLogin();
+            login.setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmRegistro.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_lblCerrar1MouseClicked
 
     private void btnRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseClicked

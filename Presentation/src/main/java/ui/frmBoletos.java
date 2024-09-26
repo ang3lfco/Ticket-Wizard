@@ -4,59 +4,45 @@
  */
 package ui;
 
+import interfaces.IEventoService;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
-import models.Boleto;
 import models.Evento;
-import services.BoletoService;
+import services.EventoService;
+
+
 
 /**
  *
  * @author martinez
  */
-public class frmCompra extends javax.swing.JFrame {
-    private Evento eventoSeleccionado;
-    private BoletoService boletoBusiness;
+public class frmBoletos extends javax.swing.JFrame {
     private String idUsuario;
+    private IEventoService eventoService;
     /**
      * Creates new form frmCompra
      */
-    public frmCompra(Evento evento, String idUsuario) throws SQLException {
+    public frmBoletos(String idUsuario) throws SQLException{
         this.idUsuario = idUsuario;
-        this.eventoSeleccionado = evento;
-        this.boletoBusiness = new BoletoService();
         initComponents();
-        cargarDatosEvento();
         setLocationRelativeTo(null);
+        this.eventoService = new EventoService();
+        cargarEventos();
     }
     
-    private void cargarDatosEvento() {
-        setTitle("Compra de boletos para: " + eventoSeleccionado.getNombre());
-        try {
-            List<Boleto> boletosDisponibles = boletoBusiness.obtenerBoletosPorEvento(eventoSeleccionado.getId());
-
-            if (boletosDisponibles.isEmpty()) {
-                cmbDisponibles.setModel(new DefaultComboBoxModel<>(new String[] { "No hay boletos disponibles" }));
-                cmbDisponibles.setEnabled(false);
-            } else {
-                DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-                for (Boleto boleto : boletosDisponibles) {
-                    model.addElement("ID: " + boleto.getId() + ", Fila: " + boleto.getFila() + ", Asiento: " + boleto.getAsiento() + " - $" + boleto.getPrecioActual());
-                }
-                cmbDisponibles.setModel(model);
-                cmbDisponibles.setEnabled(true);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al cargar boletos: " + e.getMessage());
-            cmbDisponibles.setModel(new DefaultComboBoxModel<>(new String[] { "Error al cargar boletos" }));
-            cmbDisponibles.setEnabled(false);
+    private void cargarEventos() throws SQLException {
+        List<Evento> todosLosEventos = eventoService.getTodosLosEventos();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        for(Evento e : todosLosEventos){
+            model.addElement("ID: " + e.getId() + " | " + "Evento: " + e.getNombre());
         }
+        cmbEventos.setModel(model);
+        cmbEventos.setEnabled(true);
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,31 +53,31 @@ public class frmCompra extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        cmbDisponibles = new javax.swing.JComboBox<>();
-        lblCerrar1 = new javax.swing.JLabel();
+        cmbEventos = new javax.swing.JComboBox<>();
+        lblCerrar = new javax.swing.JLabel();
         lblMinimizar = new javax.swing.JLabel();
-        btnComprar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 102));
 
-        cmbDisponibles.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbEventos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        lblCerrar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cerrar.png"))); // NOI18N
-        lblCerrar1.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cerrar.png"))); // NOI18N
+        lblCerrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblCerrar1MouseClicked(evt);
+                lblCerrarMouseClicked(evt);
             }
         });
 
         lblMinimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minimizar.png"))); // NOI18N
 
-        btnComprar.setText("Comprar");
-        btnComprar.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnComprarActionPerformed(evt);
+                btnAgregarActionPerformed(evt);
             }
         });
 
@@ -99,31 +85,31 @@ public class frmCompra extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(cmbDisponibles, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(322, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(lblMinimizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCerrar1))
-                    .addComponent(btnComprar, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(lblCerrar))
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addComponent(cmbEventos, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblCerrar1)
+                    .addComponent(lblCerrar)
                     .addComponent(lblMinimizar))
-                .addGap(64, 64, 64)
-                .addComponent(cmbDisponibles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
-                .addComponent(btnComprar)
+                .addGap(50, 50, 50)
+                .addComponent(cmbEventos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
+                .addComponent(btnAgregar)
                 .addContainerGap())
         );
 
@@ -141,45 +127,22 @@ public class frmCompra extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblCerrar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrar1MouseClicked
+    private void lblCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarMouseClicked
+        frmMenu menu;
         try {
-            // TODO add your handling code here:
-            frmMenu menu = new frmMenu(idUsuario);
+            menu = new frmMenu(idUsuario);
             menu.setVisible(true);
             this.dispose();
         } catch (SQLException ex) {
-            Logger.getLogger(frmCompra.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmBoletos.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_lblCerrar1MouseClicked
+       
+    }//GEN-LAST:event_lblCerrarMouseClicked
 
-    private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        try {
-            String selectedItem = (String) cmbDisponibles.getSelectedItem();
-            if (selectedItem == null || selectedItem.contains("No hay boletos disponibles")) {
-                JOptionPane.showMessageDialog(this, "Por favor seleccione un boleto valido.");
-                return;
-            }
-            
-            // Extraer ID del boleto seleccionado del texto del ComboBox
-            String[] parts = selectedItem.split(","); // Divide la cadena en partes usando la coma como delimitador
-            String idPart = parts[0]; // Obten la primera parte "ID: X"
-            String[] idParts = idPart.split(":"); // Divide la primera parte usando ":" como delimitador
-            int boletoId = Integer.parseInt(idParts[1].trim()); // Obten el ID y elimina espacios en blanco
-            Boleto boleto = boletoBusiness.getBoletoPorId(boletoId);
-            
-            if (boleto != null) {
-                boletoBusiness.comprarBoleto(boleto.getnSerie(), Integer.parseInt(idUsuario), 11, boleto.getPrecioActual(), (boleto.getPrecioActual() * 0.03));
-                JOptionPane.showMessageDialog(this, "Boleto seleccionado: " + boleto.getId() + " - " + boleto.getFila() + ", Asiento: " + boleto.getAsiento() + " - $" + boleto.getPrecioActual());
-                
-            } else {
-                JOptionPane.showMessageDialog(this, "No se encontró el boleto seleccionado.");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(frmCompra.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, "Error al procesar la compra: " + ex.getMessage());
-        }
-    }//GEN-LAST:event_btnComprarActionPerformed
+        
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
 //    /**
 //     * @param args the command line arguments
@@ -211,17 +174,20 @@ public class frmCompra extends javax.swing.JFrame {
 //        /* Create and display the form */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                new frmCompra().setVisible(true);
+//                try {
+//                    new frmBoletos().setVisible(true);
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(frmBoletos.class.getName()).log(Level.SEVERE, null, ex);
+//                }
 //            }
 //        });
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnComprar;
-    private javax.swing.JComboBox<String> cmbDisponibles;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JComboBox<String> cmbEventos;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCerrar;
-    private javax.swing.JLabel lblCerrar1;
     private javax.swing.JLabel lblMinimizar;
     // End of variables declaration//GEN-END:variables
 }

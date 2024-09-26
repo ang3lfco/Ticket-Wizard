@@ -4,20 +4,25 @@
  */
 package ui;
 
+import interfaces.IPersonaService;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import services.PersonaService;
 
 /**
  *
  * @author martinez
  */
 public class frmLogin extends javax.swing.JFrame {
+    private IPersonaService personaService;
 
     /**
      * Creates new form frmLogin
      */
-    public frmLogin() {
+    public frmLogin() throws SQLException {
+        this.personaService = new PersonaService();
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -39,7 +44,7 @@ public class frmLogin extends javax.swing.JFrame {
         lblCerrar = new javax.swing.JLabel();
         lblMinimizar = new javax.swing.JLabel();
         lblRegistrarme = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        pwfPass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -51,7 +56,6 @@ public class frmLogin extends javax.swing.JFrame {
         txfUsuario.setForeground(new java.awt.Color(255, 255, 255));
         txfUsuario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txfUsuario.setText("Usuario");
-        txfUsuario.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         btnEntrar.setBackground(new java.awt.Color(0, 102, 83));
@@ -95,12 +99,11 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
 
-        jPasswordField1.setBackground(new java.awt.Color(0, 51, 102));
-        jPasswordField1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jPasswordField1.setForeground(new java.awt.Color(255, 255, 255));
-        jPasswordField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPasswordField1.setText("jPasswordField1");
-        jPasswordField1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        pwfPass.setBackground(new java.awt.Color(0, 51, 102));
+        pwfPass.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        pwfPass.setForeground(new java.awt.Color(255, 255, 255));
+        pwfPass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        pwfPass.setText("jPasswordField1");
 
         javax.swing.GroupLayout pnlContenedorLayout = new javax.swing.GroupLayout(pnlContenedor);
         pnlContenedor.setLayout(pnlContenedorLayout);
@@ -109,6 +112,10 @@ public class frmLogin extends javax.swing.JFrame {
             .addComponent(lblLogo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lblRegistrarme, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pnlContenedorLayout.createSequentialGroup()
+                .addGap(121, 121, 121)
+                .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnlContenedorLayout.createSequentialGroup()
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenedorLayout.createSequentialGroup()
@@ -120,13 +127,9 @@ public class frmLogin extends javax.swing.JFrame {
                         .addGap(35, 35, 35)
                         .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(pwfPass, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 29, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(pnlContenedorLayout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlContenedorLayout.setVerticalGroup(
             pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,14 +143,14 @@ public class frmLogin extends javax.swing.JFrame {
                 .addGap(74, 74, 74)
                 .addComponent(txfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pwfPass, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblRegistrarme)
-                .addGap(52, 52, 52)
+                .addGap(56, 56, 56)
                 .addComponent(jLabel1)
-                .addGap(38, 38, 38))
+                .addGap(34, 34, 34))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -172,9 +175,14 @@ public class frmLogin extends javax.swing.JFrame {
     private void btnEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEntrarMouseClicked
         try {
             // TODO add your handling code here:
-            frmMenu principal = new frmMenu(txfUsuario.getText());
-            this.dispose();
-            principal.setVisible(true);
+            if(personaService.Auth(Integer.parseInt(txfUsuario.getText()), String.valueOf(pwfPass.getPassword()))){
+                frmMenu principal = new frmMenu(txfUsuario.getText());
+                this.dispose();
+                principal.setVisible(true);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Persona no encontrada");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -229,12 +237,12 @@ public class frmLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JLabel lblCerrar;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblMinimizar;
     private javax.swing.JLabel lblRegistrarme;
     private javax.swing.JPanel pnlContenedor;
+    private javax.swing.JPasswordField pwfPass;
     private javax.swing.JTextField txfUsuario;
     // End of variables declaration//GEN-END:variables
 }

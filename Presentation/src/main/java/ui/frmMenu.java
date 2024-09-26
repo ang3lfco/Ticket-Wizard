@@ -4,6 +4,9 @@
  */
 package ui;
 
+import interfaces.IBoletoService;
+import interfaces.IEventoService;
+import interfaces.ITransaccionService;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
@@ -15,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import models.Boleto;
@@ -30,26 +34,31 @@ import services.TransaccionService;
  */
 public class frmMenu extends javax.swing.JFrame {
     private String idUsuario;
-    private EventoService eventoService;
-    private BoletoService boletoService;
-    private TransaccionService transaccionService;
+    private IEventoService eventoService;
+    private IBoletoService boletoService;
+    private ITransaccionService transaccionService;
     /**
      * Creates new form frmMenu
      */
     public frmMenu(String idUsuario) throws SQLException {
         this.idUsuario = idUsuario;
+        this.eventoService = new EventoService();
+        this.boletoService = new BoletoService();
+        this.transaccionService = new TransaccionService();
         initComponents();
         setLocationRelativeTo(null);
         
+        if(Integer.parseInt(idUsuario) != 11){
+            btnAdmin.setEnabled(false);
+        }
     }
     
     private void cargarEventos() throws SQLException {
         lblSeleccionDelMenu.setText("Todos los eventos:");
         pnlContenedor.removeAll();
         pnlContenedor.setLayout(new BoxLayout(pnlContenedor, BoxLayout.Y_AXIS));
-        eventoService = new EventoService();
         try {
-            List<Evento> eventos = eventoService.obtenerTodosLosEventos();
+            List<Evento> eventos = eventoService.getTodosLosEventos();
             for (Evento evento : eventos) {
                 JPanel panelEvento = new JPanel();
                 panelEvento.setLayout(null);
@@ -99,7 +108,6 @@ public class frmMenu extends javax.swing.JFrame {
         lblSeleccionDelMenu.setText("Tus boletos:");
         pnlContenedor.removeAll();
         pnlContenedor.setLayout(new BoxLayout(pnlContenedor, BoxLayout.Y_AXIS));
-        boletoService = new BoletoService();
         try{
             List<Boleto> boletos = boletoService.getMisBoletos(Integer.parseInt(idUsuario));
             for(Boleto boleto : boletos){
@@ -138,7 +146,6 @@ public class frmMenu extends javax.swing.JFrame {
         lblSeleccionDelMenu.setText("Historial:");
         pnlContenedor.removeAll();
         pnlContenedor.setLayout(new BoxLayout(pnlContenedor, BoxLayout.Y_AXIS));
-        transaccionService = new TransaccionService();
         try{
             List<Transaccion> historial = transaccionService.getHistorial(Integer.parseInt(idUsuario));
             for(Transaccion t : historial){
@@ -195,6 +202,7 @@ public class frmMenu extends javax.swing.JFrame {
         spnContenedor = new javax.swing.JScrollPane();
         pnlContenedor = new javax.swing.JPanel();
         lblSeleccionDelMenu = new javax.swing.JLabel();
+        btnAdmin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -281,7 +289,7 @@ public class frmMenu extends javax.swing.JFrame {
         );
         pnlContenedorLayout.setVerticalGroup(
             pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 389, Short.MAX_VALUE)
+            .addGap(0, 398, Short.MAX_VALUE)
         );
 
         spnContenedor.setViewportView(pnlContenedor);
@@ -289,6 +297,18 @@ public class frmMenu extends javax.swing.JFrame {
         lblSeleccionDelMenu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblSeleccionDelMenu.setForeground(new java.awt.Color(255, 255, 255));
         lblSeleccionDelMenu.setText("Proximos eventos (Todos):");
+
+        btnAdmin.setBackground(new java.awt.Color(0, 102, 83));
+        btnAdmin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAdmin.setForeground(new java.awt.Color(255, 255, 255));
+        btnAdmin.setText("Administrativo");
+        btnAdmin.setBorder(null);
+        btnAdmin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAdminMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlPantallaLayout = new javax.swing.GroupLayout(pnlPantalla);
         pnlPantalla.setLayout(pnlPantallaLayout);
@@ -299,6 +319,9 @@ public class frmMenu extends javax.swing.JFrame {
                 .addGroup(pnlPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(spnContenedor)
                     .addGroup(pnlPantallaLayout.createSequentialGroup()
+                        .addComponent(lblSeleccionDelMenu)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlPantallaLayout.createSequentialGroup()
                         .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -307,16 +330,15 @@ public class frmMenu extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnMisBoletos, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblBuscarIcono)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txfBuscar)
-                        .addGap(18, 18, 18)
+                        .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblMinimizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblCerrar))
                     .addGroup(pnlPantallaLayout.createSequentialGroup()
-                        .addComponent(lblSeleccionDelMenu)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(lblBuscarIcono)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txfBuscar)))
                 .addContainerGap())
         );
         pnlPantallaLayout.setVerticalGroup(
@@ -326,19 +348,21 @@ public class frmMenu extends javax.swing.JFrame {
                 .addGroup(pnlPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblCerrar)
                     .addComponent(lblMinimizar)
-                    .addGroup(pnlPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(lblBuscarIcono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(pnlPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEventos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnMisBoletos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(txfBuscar, javax.swing.GroupLayout.Alignment.LEADING)))
-                .addGap(52, 52, 52)
+                    .addGroup(pnlPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEventos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnMisBoletos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(41, 41, 41)
                 .addComponent(lblSeleccionDelMenu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(spnContenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(spnContenedor, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(pnlPantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lblBuscarIcono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txfBuscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -368,9 +392,14 @@ public class frmMenu extends javax.swing.JFrame {
 
     private void lblCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarMouseClicked
         // TODO add your handling code here:
-        frmLogin login = new frmLogin();
-        login.setVisible(true);
-        this.dispose();
+        frmLogin login;
+        try {
+            login = new frmLogin();
+            login.setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_lblCerrarMouseClicked
 
     private void btnMisBoletosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMisBoletosMouseClicked
@@ -399,6 +428,18 @@ public class frmMenu extends javax.swing.JFrame {
             Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnHistorialMouseClicked
+
+    private void btnAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAdminMouseClicked
+        // TODO add your handling code here:
+        if(btnAdmin.isEnabled()){
+            frmAdminOption admin = new frmAdminOption(idUsuario);
+            admin.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "No puede acceder a las herramientas administrativas.");
+        }
+    }//GEN-LAST:event_btnAdminMouseClicked
 
 //    /**
 //     * @param args the command line arguments
@@ -430,12 +471,17 @@ public class frmMenu extends javax.swing.JFrame {
 //        /* Create and display the form */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                new frmMenu().setVisible(true);
+//                try {
+//                    new frmMenu("2").setVisible(true);
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+//                }
 //            }
 //        });
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdmin;
     private javax.swing.JButton btnEventos;
     private javax.swing.JButton btnHistorial;
     private javax.swing.JButton btnMisBoletos;
