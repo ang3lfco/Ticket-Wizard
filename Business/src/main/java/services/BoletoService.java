@@ -4,7 +4,7 @@
  */
 package services;
 
-import Interfaces.IBoletoService;
+import interfaces.IBoletoService;
 import dao.BoletoDAO;
 import dao.HistorialCompraVentasDAO;
 import dao.TransaccionDAO;

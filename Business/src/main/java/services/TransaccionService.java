@@ -4,7 +4,7 @@
  */
 package services;
 
-import Interfaces.ITransaccionService;
+import interfaces.ITransaccionService;
 import dao.TransaccionDAO;
 import interfaces.ITransaccionDAO;
 import java.sql.SQLException;

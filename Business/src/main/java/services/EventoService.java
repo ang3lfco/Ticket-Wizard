@@ -5,7 +5,7 @@
 package services;
 
 
-import Interfaces.IEventoService;
+import interfaces.IEventoService;
 import dao.EventoDAO;
 import interfaces.IEventoDAO;
 import java.sql.SQLException;

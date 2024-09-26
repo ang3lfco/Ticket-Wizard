@@ -4,7 +4,7 @@
  */
 package services;
 
-import Interfaces.IPersonaService;
+import interfaces.IPersonaService;
 import dao.PersonaDAO;
 import interfaces.IPersonaDAO;
 import java.sql.SQLException;

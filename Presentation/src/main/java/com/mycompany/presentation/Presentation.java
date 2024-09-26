@@ -4,6 +4,7 @@
 
 package com.mycompany.presentation;
 
+import java.sql.SQLException;
 import ui.frmLogin;
 
 /**
@@ -12,7 +13,7 @@ import ui.frmLogin;
  */
 public class Presentation {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         System.out.println("Hello World!");
         frmLogin login = new frmLogin();
         login.setVisible(true);
