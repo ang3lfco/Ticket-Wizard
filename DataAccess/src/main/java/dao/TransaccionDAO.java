@@ -5,13 +5,13 @@
 package dao;
 
 import conexion.mysqlConn;
+import interfaces.ITransaccionDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import models.Transaccion;
@@ -20,13 +20,16 @@ import models.Transaccion;
  *
  * @author martinez
  */
-public class TransaccionDAO {
+public class TransaccionDAO implements ITransaccionDAO{
+    private mysqlConn mysqlConn;
     private Connection conexion;
     
     public TransaccionDAO() throws SQLException {
+        this.mysqlConn = new mysqlConn();
         this.conexion = mysqlConn.abrirConn();
     }
     
+    @Override
     public int insertarTransaccion(Transaccion transaccion) throws SQLException {
         String query = "INSERT INTO Transacciones (_idComprador, _idVendedor, monto, comision, adquisicion, pagado, tipo) VALUES (?,?,?,?,?,?,?)";
         try (PreparedStatement stmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -53,6 +56,7 @@ public class TransaccionDAO {
         }
     }
     
+    @Override
     public List<Transaccion> getHistorialPorPersona(int idUsuario) throws SQLException{
         List<Transaccion> historialTransacciones = new ArrayList<>();
         String query = "SELECT * FROM Transacciones WHERE _idComprador = ?";

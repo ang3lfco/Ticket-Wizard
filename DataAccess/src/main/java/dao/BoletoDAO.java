@@ -5,6 +5,7 @@
 package dao;
 
 import conexion.mysqlConn;
+import interfaces.IBoletoDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,13 +18,16 @@ import models.Boleto;
  *
  * @author martinez
  */
-public class BoletoDAO {
+public class BoletoDAO implements IBoletoDAO{
+    private mysqlConn mysqlConn;
     private Connection conexion;
     
     public BoletoDAO() throws SQLException {
+        this.mysqlConn = new mysqlConn();
         this.conexion = mysqlConn.abrirConn();
     }
     
+    @Override
     public Boleto getBoletoPorId(int id) throws SQLException {
         Boleto boleto = null;
         String query = "SELECT * FROM Boletos WHERE _id = ?";
@@ -47,7 +51,8 @@ public class BoletoDAO {
         return boleto;
     }
     
-    public List<Boleto> obtenerBoletosPorEvento(int idEvento) throws SQLException {
+    @Override
+    public List<Boleto> getBoletosPorEvento(int idEvento) throws SQLException {
         List<Boleto> boletos = new ArrayList<>();
         String sql = "SELECT * FROM Boletos WHERE _evento = ? AND estado = 'Disponible'";
 
@@ -73,6 +78,7 @@ public class BoletoDAO {
         return boletos;
     }
     
+    @Override
     public Boleto getBoletoPorSerie(String nSerie) throws SQLException {
         Boleto boleto = null;
         String query = "SELECT * FROM Boletos WHERE nSerie = ?";
@@ -96,6 +102,7 @@ public class BoletoDAO {
         return boleto;
     }
     
+    @Override
     public void actualizarBoleto(Boleto boleto) throws SQLException {
         String query = "UPDATE Boletos SET estado = ?, _evento = ?, fila = ?, asiento = ?, precioOriginal = ?, precioActual = ?, nControl = ? WHERE nSerie = ?";
         try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
@@ -111,6 +118,7 @@ public class BoletoDAO {
         }
     }
     
+    @Override   
     public List<Boleto> getBoletosPorPersona(int idUsuario) throws SQLException{
         List<Boleto> boletos = new ArrayList<>();
         

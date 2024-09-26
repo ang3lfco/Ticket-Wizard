@@ -5,6 +5,7 @@
 package dao;
 
 import conexion.mysqlConn;
+import interfaces.IPersonaDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +17,8 @@ import models.Persona;
  * Clase PersonaDAO la cual gestiona las operaciones CRUD de la entidad Persona en la base de datos.
  * @author martinez
  */
-public class PersonaDAO {
+public class PersonaDAO implements IPersonaDAO{
+    private mysqlConn mysqlConn;
     private Connection conexion;
     
     /**
@@ -25,10 +27,12 @@ public class PersonaDAO {
      * @throws SQLException Si ocurre un error al abrir la conexión.
      */
     public PersonaDAO() throws SQLException{
+        this.mysqlConn = new mysqlConn();
         this.conexion = mysqlConn.abrirConn();
     }
     
-    public int Insertar(Persona persona) throws SQLException{
+    @Override
+    public int insertarPersona(Persona persona) throws SQLException{
         String query = "INSERT INTO Personas (nombre, correo, domicilio, fecha_nacimiento, saldo, contraseña) VALUES (?,?,?,?,?,?)";
         try(PreparedStatement pstm = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             pstm.setString(1, persona.getNombre());
@@ -55,6 +59,7 @@ public class PersonaDAO {
         }
     }
     
+    @Override
     public Persona getPersonaPorId(int id) throws SQLException{
         Persona persona = null;
         String query = "SELECT * FROM Personas WHERE _id = ? limit 1";
@@ -72,5 +77,16 @@ public class PersonaDAO {
             }
         }
         return persona;
+    }
+    
+    @Override
+    public boolean validarPersona(int id, String pass) throws SQLException{
+        String query = "SELECT * FROM Personas WHERE _id=? AND contraseña=?";
+        try(PreparedStatement pstm = conexion.prepareStatement(query)){
+            pstm.setInt(1, id);
+            pstm.setString(2, pass);
+            ResultSet rs = pstm.executeQuery();
+            return rs.next();
+        }
     }
 }
