@@ -4,6 +4,7 @@
  */
 package conexion;
 
+import interfaces.IConexion;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,14 +13,15 @@ import java.sql.SQLException;
  *
  * @author martinez
  */
-public class mysqlConn {
+public class mysqlConn implements IConexion{
     private static final String URL = "jdbc:mysql://localhost:3306/ticketwizard";
     private static final String USER = "root";
     private static final String PASSWORD = "mysql123";
     
     private static Connection conexion;
     
-    public static Connection abrirConn() throws SQLException {
+    @Override
+    public Connection abrirConn() throws SQLException {
         if (conexion == null || conexion.isClosed()) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -32,7 +34,8 @@ public class mysqlConn {
         return conexion;
     }
     
-    public static void cerrarConn() {
+    @Override
+    public void cerrarConn() {
         if (conexion != null) {
             try {
                 conexion.close();
