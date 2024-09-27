@@ -1,0 +1,13 @@
+1. Uso del Trigger
+Actualización de Saldo. Cuando se realiza una transacción, un trigger podría actualizar automáticamente el saldo de las personas involucradas (comprador y vendedor) en la tabla Personas.
+
+Cambio de Estado de Boleto.
+
+
+2. Uso de la Transacción
+Compra de Boleto:
+Cuando un usuario compra un boleto, se deben realizar varias acciones (insertar en Transacciones, actualizar Personas, y cambiar el estado del Boleto). Una transacción asegura que todas estas operaciones se realicen correctamente o ninguna se realice en caso de error.
+
+
+3. Uso del Stored Procedure
+Registrar una Compra de Boleto: Este procedimiento podría manejar la inserción en Transacciones, actualizar el saldo del comprador y vendedor, y cambiar el estado del boleto.
