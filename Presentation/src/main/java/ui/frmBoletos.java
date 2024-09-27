@@ -4,6 +4,7 @@
  */
 package ui;
 
+import interfaces.IBoletoService;
 import interfaces.IEventoService;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,7 +12,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import models.Boleto;
 import models.Evento;
+import services.BoletoService;
 import services.EventoService;
 
 
@@ -23,6 +27,7 @@ import services.EventoService;
 public class frmBoletos extends javax.swing.JFrame {
     private String idUsuario;
     private IEventoService eventoService;
+    private IBoletoService boletoService;
     /**
      * Creates new form frmCompra
      */
@@ -31,6 +36,7 @@ public class frmBoletos extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         this.eventoService = new EventoService();
+        this.boletoService = new BoletoService();
         cargarEventos();
     }
     
@@ -38,7 +44,7 @@ public class frmBoletos extends javax.swing.JFrame {
         List<Evento> todosLosEventos = eventoService.getTodosLosEventos();
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         for(Evento e : todosLosEventos){
-            model.addElement("ID: " + e.getId() + " | " + "Evento: " + e.getNombre());
+            model.addElement("ID: " + e.getId() + ", Evento: " + e.getNombre());
         }
         cmbEventos.setModel(model);
         cmbEventos.setEnabled(true);
@@ -57,6 +63,17 @@ public class frmBoletos extends javax.swing.JFrame {
         lblCerrar = new javax.swing.JLabel();
         lblMinimizar = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txfSerie = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txfFila = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txfAsiento = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txfPrecio = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txfControl = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -74,30 +91,106 @@ public class frmBoletos extends javax.swing.JFrame {
 
         lblMinimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minimizar.png"))); // NOI18N
 
+        btnAgregar.setBackground(new java.awt.Color(0, 102, 83));
+        btnAgregar.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregar.setText("Agregar");
+        btnAgregar.setBorder(null);
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Seleccione un evento:");
+
+        txfSerie.setBackground(new java.awt.Color(0, 51, 102));
+        txfSerie.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txfSerie.setForeground(new java.awt.Color(255, 255, 255));
+        txfSerie.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfSerie.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txfSerie.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Serie:");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Fila:");
+
+        txfFila.setBackground(new java.awt.Color(0, 51, 102));
+        txfFila.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txfFila.setForeground(new java.awt.Color(255, 255, 255));
+        txfFila.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfFila.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txfFila.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Asiento:");
+
+        txfAsiento.setBackground(new java.awt.Color(0, 51, 102));
+        txfAsiento.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txfAsiento.setForeground(new java.awt.Color(255, 255, 255));
+        txfAsiento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfAsiento.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txfAsiento.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Precio:");
+
+        txfPrecio.setBackground(new java.awt.Color(0, 51, 102));
+        txfPrecio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txfPrecio.setForeground(new java.awt.Color(255, 255, 255));
+        txfPrecio.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfPrecio.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txfPrecio.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Control:");
+
+        txfControl.setBackground(new java.awt.Color(0, 51, 102));
+        txfControl.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txfControl.setForeground(new java.awt.Color(255, 255, 255));
+        txfControl.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfControl.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txfControl.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(322, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(340, Short.MAX_VALUE)
                         .addComponent(lblMinimizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblCerrar))
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txfSerie)
+                                    .addComponent(cmbEventos, 0, 295, Short.MAX_VALUE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel3)
+                                    .addComponent(txfFila)
+                                    .addComponent(jLabel4)
+                                    .addComponent(txfAsiento)
+                                    .addComponent(jLabel5)
+                                    .addComponent(txfPrecio)
+                                    .addComponent(jLabel6)
+                                    .addComponent(txfControl))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addComponent(cmbEventos, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,11 +199,33 @@ public class frmBoletos extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblCerrar)
                     .addComponent(lblMinimizar))
-                .addGap(50, 50, 50)
+                .addGap(38, 38, 38)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbEventos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
-                .addComponent(btnAgregar)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txfSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txfFila, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txfAsiento, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txfPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txfControl, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -141,9 +256,47 @@ public class frmBoletos extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_btnAgregarActionPerformed
+        try{
+            String selectedItem = (String) cmbEventos.getSelectedItem();
+            if (selectedItem == null || selectedItem.contains("No hay boletos disponibles")) {
+                JOptionPane.showMessageDialog(this, "Por favor seleccione un boleto valido.");
+                return;
+            }
+            else{
+                // Extraer ID del boleto seleccionado del texto del ComboBox
+                String[] parts = selectedItem.split(","); // Divide la cadena en partes usando la coma como delimitador
+                String idPart = parts[0]; // Obten la primera parte "ID: X"
+                String[] idParts = idPart.split(":"); // Divide la primera parte usando ":" como delimitador
+                int eventoId = Integer.parseInt(idParts[1].trim()); // Obten el ID y elimina espacios en blanco
 
+                String nSerie = txfSerie.getText();
+                int _evento = eventoId;
+                String fila = txfFila.getText();
+                int asiento = Integer.parseInt(txfAsiento.getText());
+                Double precioOriginal = Double.parseDouble(txfPrecio.getText());
+                Double precioActual = Double.parseDouble(txfPrecio.getText());
+                String nControl = txfControl.getText();
+                String estado = "Disponible";
+                try {
+                    int affected = boletoService.añadirBoleto(nSerie, _evento, fila, asiento, precioOriginal, precioActual, nControl, estado);
+                    JOptionPane.showMessageDialog(null, "Boleto agregado con ID: " + affected);
+                } catch (SQLException ex) {
+                    Logger.getLogger(frmBoletos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Se produjo un error, revise todos los campos e intentelo de nuevo. " + e.getMessage(), "Presentacion:Error", JOptionPane.ERROR_MESSAGE);
+        }
+        LimpiarCampos();
+    }//GEN-LAST:event_btnAgregarActionPerformed
+    private void LimpiarCampos(){
+        txfSerie.setText("");
+        txfFila.setText("");
+        txfAsiento.setText("");
+        txfPrecio.setText("");
+        txfControl.setText("");
+    }
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -186,8 +339,19 @@ public class frmBoletos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JComboBox<String> cmbEventos;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCerrar;
     private javax.swing.JLabel lblMinimizar;
+    private javax.swing.JTextField txfAsiento;
+    private javax.swing.JTextField txfControl;
+    private javax.swing.JTextField txfFila;
+    private javax.swing.JTextField txfPrecio;
+    private javax.swing.JTextField txfSerie;
     // End of variables declaration//GEN-END:variables
 }

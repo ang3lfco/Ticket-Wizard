@@ -155,6 +155,13 @@ public class frmAdminOption extends javax.swing.JFrame {
 
     private void btnAgregarBoletosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarBoletosMouseClicked
         // TODO add your handling code here:
+        try{
+            frmBoletos boletos = new frmBoletos(idUsuario);
+            boletos.setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmAdminOption.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnAgregarBoletosMouseClicked
 
     private void lblCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarMouseClicked

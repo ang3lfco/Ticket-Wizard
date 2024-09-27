@@ -173,18 +173,24 @@ public class frmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_lblCerrarMouseClicked
 
     private void btnEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEntrarMouseClicked
-        try {
-            // TODO add your handling code here:
-            if(personaService.Auth(Integer.parseInt(txfUsuario.getText()), String.valueOf(pwfPass.getPassword()))){
-                frmMenu principal = new frmMenu(txfUsuario.getText());
-                this.dispose();
-                principal.setVisible(true);
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Persona no encontrada");
-            }
-        } catch (SQLException ex) {
+        try{
+            try {
+                // TODO add your handling code here:
+                if(personaService.Auth(Integer.parseInt(txfUsuario.getText()), String.valueOf(pwfPass.getPassword()))){
+                    frmMenu principal = new frmMenu(txfUsuario.getText());
+                    this.dispose();
+                    principal.setVisible(true);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Persona no registrada.");
+                }
+            } 
+            catch (SQLException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Se produjo un error, revise todos los campos e intentelo de nuevo. " + e.getMessage(), "Presentacion:Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnEntrarMouseClicked
 

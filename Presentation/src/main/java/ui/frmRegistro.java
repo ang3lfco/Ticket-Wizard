@@ -4,9 +4,11 @@
  */
 package ui;
 
+import interfaces.IPersonaService;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import services.PersonaService;
 
 /**
@@ -14,7 +16,7 @@ import services.PersonaService;
  * @author martinez
  */
 public class frmRegistro extends javax.swing.JFrame {
-    private PersonaService personaService;
+    private IPersonaService personaService;
     /**
      * Creates new form frmRegistro
      */
@@ -51,6 +53,9 @@ public class frmRegistro extends javax.swing.JFrame {
         lblCerrar1 = new javax.swing.JLabel();
         lblMinimizar = new javax.swing.JLabel();
         btnRegistrar = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -151,6 +156,18 @@ public class frmRegistro extends javax.swing.JFrame {
             }
         });
 
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setText("(YYYY-MM-DD)");
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel16.setText("correo@example.com");
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel17.setText("Calle, Numero. CP: #####");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -170,13 +187,22 @@ public class frmRegistro extends javax.swing.JFrame {
                             .addComponent(jLabel14)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(txfFechaNacimiento)
-                                .addComponent(jLabel12)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel12)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel15))
                                 .addComponent(txfCorreo)
                                 .addComponent(txfDireccion)
-                                .addComponent(jLabel11)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel11)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel17))
                                 .addComponent(txfNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
                                 .addComponent(jLabel8)
-                                .addComponent(jLabel9))
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel9)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel16)))
                             .addComponent(jLabel13)
                             .addComponent(pwfContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 15, Short.MAX_VALUE)))
@@ -200,15 +226,21 @@ public class frmRegistro extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel9)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel16))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txfCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel11)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel17))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txfDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel12)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txfFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -250,11 +282,16 @@ public class frmRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_lblCerrar1MouseClicked
 
     private void btnRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseClicked
-        char[] contrasenaChars = pwfContrasena.getPassword();
-        try {
-            personaService.Registrar(txfNombre.getText(), txfCorreo.getText(), txfDireccion.getText(), java.sql.Date.valueOf(txfFechaNacimiento.getText()), Double.parseDouble(txfSaldo.getText()), new String(contrasenaChars)) ;
-        } catch (SQLException ex) {
-            Logger.getLogger(frmRegistro.class.getName()).log(Level.SEVERE, null, ex);
+        try{
+            char[] contrasenaChars = pwfContrasena.getPassword();
+            try {
+                personaService.Registrar(txfNombre.getText(), txfCorreo.getText(), txfDireccion.getText(), java.sql.Date.valueOf(txfFechaNacimiento.getText()), Double.parseDouble(txfSaldo.getText()), new String(contrasenaChars)) ;
+            } catch (SQLException ex) {
+                Logger.getLogger(frmRegistro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Se produjo un error, revise todos los campos e intentelo de nuevo. " + e.getMessage(), "Presentacion:Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnRegistrarMouseClicked
 
@@ -302,26 +339,18 @@ public class frmRegistro extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEntrar;
     private javax.swing.JButton btnRegistrar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JLabel lblCerrar;
     private javax.swing.JLabel lblCerrar1;
     private javax.swing.JLabel lblMinimizar;
     private javax.swing.JPasswordField pwfContrasena;
@@ -330,10 +359,5 @@ public class frmRegistro extends javax.swing.JFrame {
     private javax.swing.JTextField txfFechaNacimiento;
     private javax.swing.JTextField txfNombre;
     private javax.swing.JTextField txfSaldo;
-    private javax.swing.JTextField txfUsuario;
-    private javax.swing.JTextField txfUsuario1;
-    private javax.swing.JTextField txfUsuario2;
-    private javax.swing.JTextField txfUsuario3;
-    private javax.swing.JTextField txfUsuario4;
     // End of variables declaration//GEN-END:variables
 }

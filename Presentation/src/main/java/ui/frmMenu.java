@@ -6,6 +6,7 @@ package ui;
 
 import interfaces.IBoletoService;
 import interfaces.IEventoService;
+import interfaces.IReventaService;
 import interfaces.ITransaccionService;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,15 +18,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import models.Boleto;
 import models.Evento;
+import models.Reventa;
 import models.Transaccion;
 import services.BoletoService;
 import services.EventoService;
+import services.ReventaService;
 import services.TransaccionService;
 
 /**
@@ -37,6 +41,7 @@ public class frmMenu extends javax.swing.JFrame {
     private IEventoService eventoService;
     private IBoletoService boletoService;
     private ITransaccionService transaccionService;
+    private IReventaService reventaService;
     /**
      * Creates new form frmMenu
      */
@@ -45,9 +50,9 @@ public class frmMenu extends javax.swing.JFrame {
         this.eventoService = new EventoService();
         this.boletoService = new BoletoService();
         this.transaccionService = new TransaccionService();
+        this.reventaService = new ReventaService();
         initComponents();
         setLocationRelativeTo(null);
-        
         if(Integer.parseInt(idUsuario) != 11){
             btnAdmin.setEnabled(false);
         }
@@ -104,6 +109,60 @@ public class frmMenu extends javax.swing.JFrame {
         }
     }
     
+    private void cargarReventas(){
+        lblSeleccionDelMenu.setText("Reventas:");
+        pnlContenedor.removeAll();
+        pnlContenedor.setLayout(new BoxLayout(pnlContenedor, BoxLayout.Y_AXIS));
+        
+        try {
+            List<Reventa> reventas = reventaService.getReventas();
+            for (Reventa reventa : reventas) {
+                if (reventa.getIdVendedor() == Integer.parseInt(idUsuario)) {
+                    continue;
+                }
+                JPanel panelEvento = new JPanel();
+                panelEvento.setLayout(null);
+                panelEvento.setPreferredSize(new Dimension(738, 102));
+                panelEvento.setBackground(new Color(0, 61, 122));
+
+                JLabel lblNombre = new JLabel("ID: " + reventa.getId());
+                lblNombre.setForeground(Color.WHITE);
+                lblNombre.setBounds(10, 10, 200, 30);
+                panelEvento.add(lblNombre);
+
+                JLabel lblVenue = new JLabel("ID Boleto: " + reventa.getIdBoleto());
+                lblVenue.setForeground(Color.WHITE);
+                lblVenue.setBounds(10, 40, 200, 30);
+                panelEvento.add(lblVenue);
+
+                JLabel lblFecha = new JLabel("ID Vendedor: " + reventa.getIdVendedor());
+                lblFecha.setForeground(Color.WHITE);
+                lblFecha.setBounds(10, 70, 200, 30);
+                panelEvento.add(lblFecha);
+                
+                panelEvento.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        try {
+                            frmReventa compraReventa = new frmReventa(reventa.getIdBoleto(), reventa.getIdVendedor(), idUsuario);
+                            compraReventa.setVisible(true);
+                            dispose();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+                pnlContenedor.add(panelEvento);
+                pnlContenedor.add(Box.createRigidArea(new Dimension(0, 10)));
+            }
+            pnlContenedor.revalidate();
+            pnlContenedor.repaint();
+        }
+        catch (SQLException e) {
+            System.out.println("Error al cargar los eventos: " + e.getMessage());
+        }
+    }
+    
     private void cargarMisBoletos() throws SQLException{
         lblSeleccionDelMenu.setText("Tus boletos:");
         pnlContenedor.removeAll();
@@ -113,7 +172,7 @@ public class frmMenu extends javax.swing.JFrame {
             for(Boleto boleto : boletos){
                 JPanel panelEvento = new JPanel();
                 panelEvento.setLayout(null);
-                panelEvento.setPreferredSize(new Dimension(738, 102));
+                panelEvento.setPreferredSize(new Dimension(738, 180));
                 panelEvento.setBackground(new Color(0, 61, 122));
 
                 JLabel lblNombre = new JLabel("nSerie: " + boleto.getnSerie());
@@ -131,6 +190,25 @@ public class frmMenu extends javax.swing.JFrame {
                 lblFecha.setBounds(10, 70, 200, 30);
                 panelEvento.add(lblFecha);
                 
+                JButton btnRevender = new JButton();
+                btnRevender.setText("Revender");
+                btnRevender.setForeground(Color.WHITE);
+                btnRevender.setBackground(new Color(0,102,83));
+                btnRevender.setBounds(10, 120, 100, 30);
+                panelEvento.add(btnRevender);
+                
+                btnRevender.addMouseListener(new MouseAdapter(){
+                    @Override
+                    public void mouseClicked(MouseEvent e){
+                        try {
+                            int affected = reventaService.Revender(boleto.getId(), Integer.parseInt(idUsuario));
+                            JOptionPane.showMessageDialog(null, "ID Boleto seleccionado: " + boleto.getId() +  " | ID Reventa: " + affected);
+                        } 
+                        catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(null, "SQLError." + ex.getMessage());
+                        }
+                    }
+                });
                 pnlContenedor.add(panelEvento);
                 pnlContenedor.add(Box.createRigidArea(new Dimension(0, 10)));
             }
@@ -203,6 +281,7 @@ public class frmMenu extends javax.swing.JFrame {
         pnlContenedor = new javax.swing.JPanel();
         lblSeleccionDelMenu = new javax.swing.JLabel();
         btnAdmin = new javax.swing.JButton();
+        btnReventas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -310,6 +389,18 @@ public class frmMenu extends javax.swing.JFrame {
             }
         });
 
+        btnReventas.setBackground(new java.awt.Color(0, 102, 83));
+        btnReventas.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnReventas.setForeground(new java.awt.Color(255, 255, 255));
+        btnReventas.setText("Reventas");
+        btnReventas.setBorder(null);
+        btnReventas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReventas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReventasMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlPantallaLayout = new javax.swing.GroupLayout(pnlPantalla);
         pnlPantalla.setLayout(pnlPantallaLayout);
         pnlPantallaLayout.setHorizontalGroup(
@@ -331,6 +422,8 @@ public class frmMenu extends javax.swing.JFrame {
                         .addComponent(btnMisBoletos, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnReventas, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblMinimizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -353,7 +446,8 @@ public class frmMenu extends javax.swing.JFrame {
                         .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnEventos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnMisBoletos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnReventas, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(41, 41, 41)
                 .addComponent(lblSeleccionDelMenu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -441,6 +535,11 @@ public class frmMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAdminMouseClicked
 
+    private void btnReventasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReventasMouseClicked
+        // TODO add your handling code here:
+        cargarReventas();
+    }//GEN-LAST:event_btnReventasMouseClicked
+
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -486,6 +585,7 @@ public class frmMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnHistorial;
     private javax.swing.JButton btnMisBoletos;
     private javax.swing.JButton btnPerfil;
+    private javax.swing.JButton btnReventas;
     private javax.swing.JLabel lblBuscarIcono;
     private javax.swing.JLabel lblCerrar;
     private javax.swing.JLabel lblMinimizar;

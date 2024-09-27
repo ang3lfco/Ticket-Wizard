@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import models.Evento;
 import services.EventoService;
 
@@ -57,6 +58,7 @@ public class frmEvento extends javax.swing.JFrame {
         lblMinimizar = new javax.swing.JLabel();
         btnCrear = new javax.swing.JButton();
         txfEstado = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -67,24 +69,28 @@ public class frmEvento extends javax.swing.JFrame {
         txfNombre.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txfNombre.setForeground(new java.awt.Color(255, 255, 255));
         txfNombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfNombre.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfNombre.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         txfFecha.setBackground(new java.awt.Color(0, 51, 102));
         txfFecha.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txfFecha.setForeground(new java.awt.Color(255, 255, 255));
         txfFecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfFecha.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfFecha.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         txfVenue.setBackground(new java.awt.Color(0, 51, 102));
         txfVenue.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txfVenue.setForeground(new java.awt.Color(255, 255, 255));
         txfVenue.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfVenue.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfVenue.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         txfCiudad.setBackground(new java.awt.Color(0, 51, 102));
         txfCiudad.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txfCiudad.setForeground(new java.awt.Color(255, 255, 255));
         txfCiudad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfCiudad.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfCiudad.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -111,6 +117,7 @@ public class frmEvento extends javax.swing.JFrame {
         txfDescripcion.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txfDescripcion.setForeground(new java.awt.Color(255, 255, 255));
         txfDescripcion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfDescripcion.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfDescripcion.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -142,7 +149,12 @@ public class frmEvento extends javax.swing.JFrame {
         txfEstado.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txfEstado.setForeground(new java.awt.Color(255, 255, 255));
         txfEstado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txfEstado.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txfEstado.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("(YYYY-MM-DD)");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -160,7 +172,10 @@ public class frmEvento extends javax.swing.JFrame {
                     .addComponent(jLabel11)
                     .addComponent(txfNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel9)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel10))
                     .addComponent(jLabel13)
                     .addComponent(txfEstado))
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -187,7 +202,9 @@ public class frmEvento extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel9)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txfFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -237,19 +254,36 @@ public class frmEvento extends javax.swing.JFrame {
     }//GEN-LAST:event_lblCerrarMouseClicked
 
     private void btnCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearMouseClicked
-        String fechaStr = txfFecha.getText();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date utilDate;
-        try {
-            utilDate = formatter.parse(fechaStr);
-            Date sqlDate = new Date(utilDate.getTime());
-            Evento evento = new Evento(txfNombre.getText(), sqlDate, txfVenue.getText(), txfCiudad.getText(), txfEstado.getText(), txfDescripcion.getText(), "");
-            eventoService.CrearEvento(evento);
-        } catch (ParseException | SQLException ex) {
-            Logger.getLogger(frmEvento.class.getName()).log(Level.SEVERE, null, ex);
+        try{
+            String fechaStr = txfFecha.getText();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date utilDate;
+            try {
+                utilDate = formatter.parse(fechaStr);
+                Date sqlDate = new Date(utilDate.getTime());
+                int affected = eventoService.CrearEvento(txfNombre.getText(), sqlDate, txfVenue.getText(), txfCiudad.getText(), txfEstado.getText(), txfDescripcion.getText(), "");
+                if(affected != 0){
+                    JOptionPane.showMessageDialog(null, "Evento añadido con exito.");
+                    LimpiarCampos();
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQLException Error. " + ex.getMessage(), "Presentacion:Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Se produjo un error, revise todos los campos e intentelo de nuevo. " + e.getMessage(), "Presentacion:Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btnCrearMouseClicked
-
+    
+    private void LimpiarCampos(){
+        txfNombre.setText("");
+        txfVenue.setText("");
+        txfCiudad.setText("");
+        txfEstado.setText("");
+        txfDescripcion.setText("");
+        txfFecha.setText("");
+    }
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -291,6 +325,7 @@ public class frmEvento extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrear;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

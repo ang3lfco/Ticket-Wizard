@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import models.Persona;
 
 /**
@@ -32,8 +33,9 @@ public class PersonaDAO implements IPersonaDAO{
     }
     
     @Override
-    public int insertarPersona(Persona persona) throws SQLException{
+    public int insertarPersona(String nombre, String correo, String domicilio, Date fechaNacimiento, double saldo, String contrasena) throws SQLException{
         String query = "INSERT INTO Personas (nombre, correo, domicilio, fecha_nacimiento, saldo, contraseña) VALUES (?,?,?,?,?,?)";
+        Persona persona = new Persona(nombre, correo, domicilio, fechaNacimiento, saldo, contrasena);
         try(PreparedStatement pstm = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             pstm.setString(1, persona.getNombre());
             pstm.setString(2, persona.getCorreo());

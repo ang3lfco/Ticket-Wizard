@@ -17,4 +17,5 @@ public interface IBoletoService {
     List<Boleto> obtenerBoletosPorEvento(int idEvento) throws SQLException;
     void comprarBoleto(String nSerie, int idComprador, int idVendedor, double monto, double comision) throws SQLException;
     List<Boleto> getMisBoletos(int idUsuario) throws SQLException;
+    int añadirBoleto(String nSerie, int _evento, String fila, int asiento, Double precioOriginal, Double precioActual, String nControl, String estado) throws SQLException;
 }

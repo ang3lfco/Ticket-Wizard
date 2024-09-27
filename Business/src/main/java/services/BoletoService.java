@@ -13,6 +13,7 @@ import interfaces.IHistorialCompraVentasDAO;
 import interfaces.ITransaccionDAO;
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.JOptionPane;
 import models.Boleto;
 import models.Transaccion;
 
@@ -32,6 +33,29 @@ public class BoletoService implements IBoletoService{
     }
     
     @Override
+    public int añadirBoleto(String nSerie, int _evento, String fila, int asiento, Double precioOriginal, Double precioActual, String nControl, String estado) throws SQLException {
+        if (!nSerie.matches("^[a-zA-Z0-9]{4,}$") || !nControl.matches("^[a-zA-Z0-9]{4,}$") || nSerie.trim().isEmpty() || nControl.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El número de serie y de control solo debe contener letras, numeros, no espacios y al menos 4 caracteres.", "Negocio:Error", JOptionPane.ERROR_MESSAGE);
+            return -1;
+        }
+        else if (fila == null || fila.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese una fila valida.", "Negocio:Error", JOptionPane.ERROR_MESSAGE);
+            return -1;
+        }
+        else if (asiento <= 0) {
+            JOptionPane.showMessageDialog(null, "Ingrese un asiento valido.", "Negocio:Error", JOptionPane.ERROR_MESSAGE);
+            return -1;
+        }
+        else if (precioOriginal == null || precioOriginal <= 0) {
+            JOptionPane.showMessageDialog(null, "Ingrese un precio valido.", "Negocio:Error", JOptionPane.ERROR_MESSAGE);
+            return -1;
+        }
+        else{
+            return boletoDAO.InsertarBoleto(nSerie, _evento, fila, asiento, precioOriginal, precioActual, nControl, estado);
+        }
+    }
+    
+    @Override
     public Boleto getBoletoPorId(int id) throws SQLException {
         return boletoDAO.getBoletoPorId(id);
     }
@@ -43,17 +67,7 @@ public class BoletoService implements IBoletoService{
     
     @Override
     public void comprarBoleto(String nSerie, int idComprador, int idVendedor, double monto, double comision) throws SQLException {
-        Boleto boleto = boletoDAO.getBoletoPorSerie(nSerie);
-        if (boleto != null && boleto.getEstado().equals("Disponible")) {
-            boleto.setEstado("Apartado");
-            boletoDAO.actualizarBoleto(boleto);
-            Transaccion transaccion = new Transaccion(idComprador, idVendedor, monto, comision, new java.util.Date(), true, "Compra");            
-            int idTransaccion = transaccionDAO.insertarTransaccion(transaccion);
-            historialDAO.insertarHistorial(boleto.getId(), idTransaccion);
-        } 
-        else {
-            throw new IllegalArgumentException("El boleto no esta disponible.");
-        }
+        boletoDAO.comprarBoleto(nSerie, idComprador, idVendedor, monto, comision);
     }
     
     @Override

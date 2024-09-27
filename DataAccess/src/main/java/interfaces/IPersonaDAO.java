@@ -5,6 +5,7 @@
 package interfaces;
 
 import java.sql.SQLException;
+import java.util.Date;
 import models.Persona;
 
 /**
@@ -12,7 +13,7 @@ import models.Persona;
  * @author martinez
  */
 public interface IPersonaDAO {
-    int insertarPersona(Persona persona) throws SQLException;
+    int insertarPersona(String nombre, String correo, String domicilio, Date fechaNacimiento, double saldo, String contrasena) throws SQLException;
     Persona getPersonaPorId(int id) throws SQLException;
     boolean validarPersona(int id, String pass) throws SQLException;
 }

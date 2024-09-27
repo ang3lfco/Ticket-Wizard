@@ -30,7 +30,8 @@ public class EventoDAO implements IEventoDAO{
     }
     
     @Override
-    public int insertarEvento(Evento evento) throws SQLException{
+    public int insertarEvento(String nombre, Date fecha, String venue, String ciudad, String estado, String descripcion, String imagenPath) throws SQLException{
+        Evento evento = new Evento(nombre, fecha, venue, ciudad, estado, descripcion, imagenPath);
         String query = "INSERT INTO Eventos (nombre, fecha, venue, ciudad, estado, descripcion, imagenPath) VALUES (?,?,?,?,?,?,?)";
         try(PreparedStatement pstm = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             pstm.setString(1, evento.getNombre());

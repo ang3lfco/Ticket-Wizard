@@ -20,6 +20,17 @@ public class Boleto {
     private String estado; // 'Disponible' o 'Apartado'
 
     public Boleto() {}
+    
+    public Boleto(String nSerie, int _evento, String fila, int asiento, Double precioOriginal, Double precioActual, String nControl, String estado) {
+        this.nSerie = nSerie;
+        this._evento = _evento;
+        this.fila = fila;
+        this.asiento = asiento;
+        this.precioOriginal = precioOriginal;
+        this.precioActual = precioActual;
+        this.nControl = nControl;
+        this.estado = estado;
+    }
  
     public Boleto(int id, String nSerie, int _evento, String fila, int asiento, Double precioOriginal, Double precioActual, String nControl, String estado) {
         this.id = id;

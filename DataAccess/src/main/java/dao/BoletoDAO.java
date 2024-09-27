@@ -6,10 +6,12 @@ package dao;
 
 import conexion.mysqlConn;
 import interfaces.IBoletoDAO;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import models.Boleto;
@@ -25,6 +27,83 @@ public class BoletoDAO implements IBoletoDAO{
     public BoletoDAO() throws SQLException {
         this.mysqlConn = new mysqlConn();
         this.conexion = mysqlConn.abrirConn();
+    }
+    
+    @Override
+    public int InsertarBoleto(String nSerie, int _evento, String fila, int asiento, Double precioOriginal, Double precioActual, String nControl, String estado) throws SQLException{
+        Boleto boleto = new Boleto(nSerie, _evento, fila, asiento, precioOriginal, precioActual, nControl, estado);
+        String query = "INSERT INTO Boletos (nSerie, _evento, fila, asiento, precioOriginal, precioActual, nControl, estado) VALUES (?,?,?,?,?,?,?,?)";
+        try(PreparedStatement pstm = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
+            pstm.setString(1, boleto.getnSerie());
+            pstm.setInt(2, boleto.getEvento());
+            pstm.setString(3, boleto.getFila());
+            pstm.setInt(4, boleto.getAsiento());
+            pstm.setDouble(5, boleto.getPrecioOriginal());
+            pstm.setDouble(6, boleto.getPrecioActual());
+            pstm.setString(7, boleto.getnControl());
+            pstm.setString(8, boleto.getEstado());
+            
+            int affectedRows = pstm.executeUpdate();
+            if(affectedRows == 0){
+                throw new SQLException ("Error al insertar Boleto, no hubo filas creadas.");
+            }
+            else{
+                try(ResultSet generatedKeys = pstm.getGeneratedKeys()){
+                    if(generatedKeys.next()){
+                        return generatedKeys.getInt(1);
+                    }
+                    else{
+                        throw new SQLException("Error al insertar Boleto, no se obtuvo el ID.");
+                    }
+                }
+            }
+        }
+    }
+    
+    @Override
+    public void comprarBoleto(String nSerie, int idComprador, int idVendedor, double monto, double comision) throws SQLException{
+        Boleto boleto = this.getBoletoPorSerie(nSerie);
+        if (boleto != null && boleto.getEstado().equals("Disponible")) {
+            conexion.setAutoCommit(false);
+            //Stored Procedure y Trigger se disparan aqui
+            String query = "{CALL realizar_compra_boleto(?, ?, ?, ?, ?)}";
+            try (CallableStatement stmt = conexion.prepareCall(query)) {
+                stmt.setInt(1, idComprador);
+                stmt.setInt(2, idVendedor);
+                stmt.setInt(3, boleto.getId());
+                stmt.setDouble(4, monto);
+                stmt.setDouble(5, comision);
+                stmt.execute();
+                if (true) {  // Condición intencionalmente siempre verdadera
+                    throw new RuntimeException("Error intencional para probar el rollback.");
+                }
+                
+                // Si se ejecuta todo correctamente confirmamos la transaccion
+                conexion.commit();
+            } 
+            catch(SQLException e) {
+                // Cualquier error revertimos todo
+                if (conexion != null){
+                    try {
+                        conexion.rollback();
+                    } 
+                    catch(SQLException rollbackEx){
+                        rollbackEx.printStackTrace();
+                    }
+                }
+                throw new SQLException("Error al comprar Boleto. " + e.getMessage(), e);
+            }
+            finally {
+                try {
+                    conexion.setAutoCommit(true);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } 
+        else {
+            throw new IllegalArgumentException("Boleto no disponible. ");
+        }
     }
     
     @Override
